@@ -14,6 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * CampusClash block configuration form definition
+ *
+ * @package    campusclash
+ * @subpackage block_campusclash
+ * @authors    Juan Pablo Navarro Castillo
+ */
+
+
 defined('MOODLE_INTERNAL') || die();
 
 class block_campusclash extends block_base {
@@ -22,14 +31,35 @@ class block_campusclash extends block_base {
         $this->title = get_string('campusclash', 'block_campusclash');
     }
 
+    public function specialization() {
+    	
+	if (isset($this->config)) {
+            if (empty($this->config->title)) {
+            	$this->title = get_string('defaulttitle', 'block_campusclash');            
+            } else {
+            	$this->title = $this->config->title;
+            }
+ 
+            if (empty($this->config->text)) {
+            	$this->config->text = get_string('defaulttext', 'block_campusclash');
+            } 
+    	}
+    }
+
     function get_content() {
    	if ($this->content !== NULL) {
             return $this->content;
     	}
-
+	
     	$this->content = new stdClass;
-    	$this->content->text = '¡Primeros pasos para crear el bloque!';
-    	$this->content->footer = 'Proximamente... ¡¡MÁS!!';
+    	
+    	if (! empty($this->config->text)) {
+    	    $this->content->text = $this->config->text;
+	} else {
+	    $this->content->text = '¡Primeros pasos para crear el bloque. Pon un título al bloque!';
+	}
+
+	$this->content->footer = 'Proximamente... ¡¡MÁS!!';
 
     	return $this->content;
     }

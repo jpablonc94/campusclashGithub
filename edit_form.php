@@ -18,12 +18,18 @@
 /**
  * CampusClash block configuration form definition
  *
- * @package    contrib
- * @subpackage block_ranking
- * @copyright  2015 Willian Mano http://willianmano.net
- * @authors    Willian Mano
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    campusclash
+ * @subpackage block_campusclash
+ * @authors    Juan Pablo Navarro Castillo
  */
+
+/**
+
+Este archivo define los elementos dentro de la edición del bloque. Es decir, lo que veremos cuando
+entremos en el modo edición del curso y clickemos en la tuerca del bloque.
+
+*/
+
  
 class block_campusclash_edit_form extends block_edit_form {
  
@@ -35,7 +41,12 @@ class block_campusclash_edit_form extends block_edit_form {
         // A sample string variable with a default value.
         $mform->addElement('text', 'config_text', get_string('blockstring', 'block_campusclash'));
         $mform->setDefault('config_text', 'default value');
-        $mform->setType('config_text', PARAM_RAW);        
+        $mform->setType('config_text', PARAM_RAW); 
+	
+	// A sample string variable with a default value.
+    	$mform->addElement('text', 'config_title', get_string('blocktitle', 'block_campusclash'));
+    	$mform->setDefault('config_title', 'default value');
+    	$mform->setType('config_title', PARAM_TEXT);       
  
     }
 }
