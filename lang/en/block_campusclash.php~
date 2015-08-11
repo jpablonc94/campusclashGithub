@@ -30,7 +30,6 @@ Este apartado es el llamado language file y es donde se realizan las traduccione
  * @authors    Juan Pablo Navarro Castillo
  */
 
-/**
 
 $string['pluginname'] = 'CampusClash block';
 $string['campusclash'] = 'CampusClash';

@@ -64,8 +64,50 @@ class block_campusclash extends block_base {
     	return $this->content;
     }
 
+    public function applicable_formats() {
+        return array(
+            'course-view'    => true,
+            'site'           => false,
+            'mod'            => false,
+            'my'             => false
+        );
+    }
+
+    public function instance_config_save($data) {
+  	if(get_config('campusclash', 'Allow_HTML') == '1') {
+  	    $data->text = strip_tags($data->text);
+    	}
+ 
+    // And now forward to the default implementation defined in the parent class
+    return parent::instance_config_save($data);
+    }
+
+    public function html_attributes() {
+    	$attributes = parent::html_attributes(); // Get default values
+   	$attributes['class'] .= ' block_'. $this->name(); // Append our class to class attribute
+   	return $attributes;
+    }
+
+    public function instance_allow_multiple() {
+  	return false;
+    }
+	
+    public function hide_header() {
+  	return false;
+    }
+
     function instance_allow_config() {
     	return true;
     }
+
+    public function cron() {
+    	mtrace( "Hey, my cron script is running" );
+ 
+    	// do something
+ 
+    	return true;
+    }
+
+    function has_config() {return true;}
 }
 

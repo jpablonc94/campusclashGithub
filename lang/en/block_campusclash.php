@@ -31,7 +31,7 @@ Este apartado es el llamado language file y es donde se realizan las traduccione
  */
 
 
-$string['pluginname'] = 'CampusClash block';
+$string['pluginname'] = 'CampusClash';
 $string['campusclash'] = 'CampusClash';
 $string['campusclash:addinstance'] = 'Add a new CampusClash block';
 $string['campusclash:myaddinstance'] = 'Add a new CampusClash block to the My Moodle page';

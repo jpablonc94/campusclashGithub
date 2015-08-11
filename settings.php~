@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of CampusClash block for Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -14,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+
 /**
  * CampusClash block configuration form definition
  *
@@ -24,12 +26,23 @@
 
 /**
 
+Este archivo define los parámetros de confguración del bloque. Es decir, lo que veremos cuando nos metamos en el bloque de administración y queramos configurar el bloque.
+
 */
 
-defined('MOODLE_INTERNAL') || die();
+defined('MOODLE_INTERNAL') || die;
 
-$plugin->version   = 2015070100;
-$plugin->requires  = 2011120511;
-$plugin->maturity  = MATURITY_STABLE;
-$plugin->release   = 'Version for Moodle 2.9 onwards';
-$plugin->component = 'block_campusclash';
+if ($ADMIN->fulltree) {
+$settings->add(new admin_setting_heading(
+            'headerconfig',
+            get_string('headerconfig', 'block_campusclash'),
+            get_string('descconfig', 'block_campusclash')
+        ));
+ 
+$settings->add(new admin_setting_configcheckbox(
+            'campusclash/Allow_HTML',
+            get_string('labelallowhtml', 'block_campusclash'),
+            get_string('descallowhtml', 'block_campusclash'),
+            '0'
+        ));
+}

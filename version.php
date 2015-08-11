@@ -33,3 +33,4 @@ $plugin->requires  = 2011120511;
 $plugin->maturity  = MATURITY_STABLE;
 $plugin->release   = 'Version for Moodle 2.9 onwards';
 $plugin->component = 'block_campusclash';
+$plugin->cron = 300;
