@@ -31,6 +31,7 @@ class block_campusclash extends block_base {
         $this->title = get_string('campusclash', 'block_campusclash');
     }
 
+    //Se ejecutará antes de nada. En este caso le dará un título y un texto a nuestro bloque
     public function specialization() {
     	
 	if (isset($this->config)) {
@@ -45,7 +46,8 @@ class block_campusclash extends block_base {
             } 
     	}
     }
-
+    
+    //Lo que se verá en la pestaña del curso
     function get_content() {
    	if ($this->content !== NULL) {
             return $this->content;
@@ -64,6 +66,7 @@ class block_campusclash extends block_base {
     	return $this->content;
     }
 
+    //¿Dónde se puede colocar nuestro bloque?
     public function applicable_formats() {
         return array(
             'course-view'    => true,
@@ -73,6 +76,7 @@ class block_campusclash extends block_base {
         );
     }
 
+    //Decidir cómo queremos que se almacene la información que nos llega de entrada
     public function instance_config_save($data) {
   	if(get_config('campusclash', 'Allow_HTML') == '1') {
   	    $data->text = strip_tags($data->text);
@@ -88,18 +92,22 @@ class block_campusclash extends block_base {
    	return $attributes;
     }
 
+    //Permite tener varios bloques del mismo tipo a la vez en el mismo curso
     public function instance_allow_multiple() {
   	return false;
     }
-	
+    
+    //Oculta el título
     public function hide_header() {
   	return false;
     }
 
+    
     function instance_allow_config() {
     	return true;
     }
 
+    //Comunicarse con cron
     public function cron() {
     	mtrace( "Hey, my cron script is running" );
  
@@ -107,7 +115,8 @@ class block_campusclash extends block_base {
  
     	return true;
     }
-
+ 
+    //Permite a Moodle ver settings.php de nuestro directorio
     function has_config() {return true;}
 }
 
