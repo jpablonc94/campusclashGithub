@@ -16,7 +16,7 @@
 
 
 /**
- * Ranking block upgrade
+ * Ranking block test class
  *
  * @package    contrib
  * @subpackage block_ranking
@@ -25,35 +25,16 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+defined('MOODLE_INTERNAL') || die();
+
 /**
- * Upgrade the ranking block
- * @param int $oldversion
- * @param object $block
- * @return bool
+ * Unit tests for {@link block_ranking}.
+ * @group block_ranking_group
  */
+class block_ranking_testcase extends advanced_testcase {
+    public function test_adding() {
+        $this->resetAfterTest(true);
 
-function xmldb_block_campusclash_upgrade($oldversion, $block) {
-    global $DB;
-
-    if ($oldversion < 2015030300) {
-        // Drop the mirror table.
-        $dbman = $DB->get_manager();
-
-        // Define table to be dropped.
-        $table = new xmldb_table('campusclash_cmc_mirror');
-        if ($dbman->table_exists($table)) {
-            $dbman->drop_table($table);
-        }
+        $this->assertEquals(2, 2);
     }
-
-    if ($oldversion > 2015030300 && $oldversion < 2015051800) {
-        $criteria = array(
-            'plugin' => 'block_campusclash',
-            'name' => 'lastcomputedid'
-        );
-
-        $DB->delete_records('config_plugins', $criteria);
-    }
-
-    return true;
 }

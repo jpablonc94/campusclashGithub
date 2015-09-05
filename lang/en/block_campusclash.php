@@ -40,3 +40,46 @@ $string['campusclash:myaddinstance'] = 'Add a new CampusClash block to the My Mo
 $string['blockstring'] = 'Block String';
 $string['blocktitle'] = 'Block Title';
 $string['configuration'] = 'Block CampusClash configuration';
+
+$string['blockname'] = 'CAMPUS CLASH Block';
+$string['addpage'] = 'Add a Page';
+
+// strings for config_global.html
+$string['donotallowhtml'] = 'Do not allow HTML';
+
+// strings for config_instance.html
+$string['configtitle'] = 'Title';
+$string['configcontent'] = 'Content';
+
+// strings for permissions and capabilities
+$string['campusclash:viewpages'] = 'View campusclash Pages';
+$string['campusclash:managepages'] = 'Manage campusclash Pages';
+
+// strings for our form
+$string['formtitle'] = 'campusclash Page';
+$string['textfields'] = 'Displayed on Page';
+$string['pagetitle'] = 'Title of Page';
+$string['displayedhtml'] = 'Displayed HTML';
+$string['displayfile'] = 'Display File';
+$string['picturefields'] = 'Picture Fields';
+$string['displaypicture'] = 'Display Picture';
+$string['pictureselect'] = 'Select a Picture to Display';
+$string['picturedesc'] = 'Describe the picture you selected';
+$string['displaydate'] = 'Display Date';
+$string['blue'] = 'Blue';
+$string['red'] = 'Red';
+$string['green'] = 'Green';
+$string['updateerror'] = 'Update failed';
+
+// strings via view.php
+$string['invalidcourse'] = 'The courseid $a does not exist';
+$string['nopage'] = 'The simplepage corresponding to id: $a does not exist';
+$string['viewfile'] = 'View/Download File';
+
+$string['confirmdelete'] = 'Confirm Delete';
+$string['deletepage'] = 'Do you really want to delete \'$a\'';
+
+
+
+
+

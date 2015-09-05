@@ -1,39 +1,13 @@
 <?php
-// This file is part of CampusClash block for Moodle - http://moodle.org/
-//
-// Moodle is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Moodle is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
-/**
- * CampusClash block configuration form definition
- *
- * @package    campusclash
- * @subpackage block_campusclash
- * @authors    Juan Pablo Navarro Castillo
- */
-
-
-defined('MOODLE_INTERNAL') || die();
-
 class block_campusclash extends block_base {
-
-    function init() {
+    
+    public function init() {
         $this->title = get_string('campusclash', 'block_campusclash');
     }
-
+    // The PHP tag and the curly bracket for the class definition 
+    // will only be closed after there is another function added in the next section.
     public function specialization() {
-    	
-	if (isset($this->config)) {
+    	if (isset($this->config)) {
             if (empty($this->config->title)) {
             	$this->title = get_string('defaulttitle', 'block_campusclash');            
             } else {
@@ -42,26 +16,107 @@ class block_campusclash extends block_base {
  
             if (empty($this->config->text)) {
             	$this->config->text = get_string('defaulttext', 'block_campusclash');
-            } 
-    	}
+            }    
+        }
     }
 
-    function get_content() {
-   	if ($this->content !== NULL) {
+    public function get_content() {
+        global $COURSE, $DB, $PAGE;
+
+	if ($this->content !== null) {
             return $this->content;
-    	}
-	
-    	$this->content = new stdClass;
-    	
-    	if (! empty($this->config->text)) {
+        }
+	if (! empty($this->config->text)) {
     	    $this->content->text = $this->config->text;
-	} else {
-	    $this->content->text = '¡Primeros pasos para crear el bloque. Pon un título al bloque!';
 	}
 
-	$this->content->footer = 'Proximamente... ¡¡MÁS!!';
+	//Texto que aparece en el bloque
+        $this->content         =  new stdClass;
+        $this->content->text   = 'The content of our CampusCLASH block!';
 
-    	return $this->content;
+	$context = context_course::instance($COURSE->id);
+	$url = new moodle_url('/blocks/campusclash/view.php', array('blockid' => $this->instance->id, 'courseid' => $COURSE->id));
+    	$this->content->footer = html_writer::link($url, get_string('addpage', 'block_campusclash'));
+ 
+	if (has_capability('block/campusclash:managepages', $context)) {
+    	    $url = new moodle_url('/blocks/campusclash/view.php', array('blockid' => $this->instance->id, 'courseid' => $COURSE->id));
+    	    $this->content->footer = html_writer::link($url, get_string('addpage', 'block_campusclash'));
+	} else {
+            $this->content->footer = '';
+	}
+        
+	
+	// Check to see if we are in editing mode and that we can manage pages.
+	$canmanage = has_capability('block/campusclash:managepages', $context) && $PAGE->user_is_editing($this->instance->id);
+	$canview = has_capability('block/campusclash:viewpages', $context);
+
+ 	if ($campusclashpages = $DB->get_records('block_campusclash', array('blockid' => $this->instance->id))) {
+            $this->content->text .= html_writer::start_tag('ul');
+    	    foreach ($campusclashpages as $campusclashpage) {
+		if ($canmanage) {
+            	    $pageparam = array('blockid' => $this->instance->id, 
+                    	'courseid' => $COURSE->id, 
+                    	'id' => $campusclashpage->id);
+                    $editurl = new moodle_url('/blocks/campusclash/view.php', $pageparam);
+             	    $editpicurl = new moodle_url('/pix/t/edit.png');
+            	    $edit = html_writer::link($editurl, html_writer::tag('img', '', array('src' => $editpicurl, 'alt' => get_string('edit'))));
+
+		    //delete
+    		    $deleteparam = array('id' => $campusclashpage->id, 'courseid' => $COURSE->id);
+   		    $deleteurl = new moodle_url('/blocks/campusclash/delete.php', $deleteparam);
+ 		    $deletepicurl = new moodle_url('/pix/t/delete.png');
+		    $delete = html_writer::link($deleteurl, html_writer::tag('img', '', array('src' => $deletepicurl, 'alt' => get_string('delete'))));
+        	} else {
+            	    $edit = '';
+		    $delete = '';
+        	}
+		$pageurl = new moodle_url('/blocks/campusclash/view.php', array('blockid' => $this->instance->id, 'courseid' => $COURSE->id, 'id' => $campusclashpage->id, 'viewpage' => true));
+		$this->content->text .= html_writer::start_tag('li');        	
+		if ($canview) {
+    	    	    $this->content->text .= html_writer::link($pageurl, $campusclashpage->pagetitle);
+		} else {
+    	    	    $this->content->text .= html_writer::tag('div', $campusclashpage->pagetitle);
+		}
+		$this->content->text .= '  ';
+		$this->content->text .= $edit;
+		$this->content->text .= '  ';
+		$this->content->text .= $delete;
+        	$this->content->text .= html_writer::end_tag('li');		
+            }
+    	    $this->content->text .= html_writer::end_tag('ul');
+	}
+
+        return $this->content;
+    }
+
+    public function instance_config_save($data) {
+       if(get_config('campusclash', 'Allow_HTML') == '1') {
+          $data->text = strip_tags($data->text);
+       }
+ 
+       // And now forward to the default implementation defined in the parent class
+       return parent::instance_config_save($data);
+    } 
+
+    public function instance_delete() {
+    	global $DB;
+    	$DB->delete_records('block_campusclash', array('blockid' => $this->instance->id));
+    }
+    
+    public function instance_allow_multiple() {
+        return true;
+    }
+    
+    function has_config() {return true;}
+
+    public function hide_header() {
+        return true;
+    }
+
+    public function html_attributes() {
+    	$attributes = parent::html_attributes(); // Get default values
+    	$attributes['class'] .= ' block_'. $this->name(); // Append our class to class attribute
+    	return $attributes;
     }
 
     public function applicable_formats() {
@@ -73,41 +128,25 @@ class block_campusclash extends block_base {
         );
     }
 
-    public function instance_config_save($data) {
-  	if(get_config('campusclash', 'Allow_HTML') == '1') {
-  	    $data->text = strip_tags($data->text);
-    	}
- 
-    // And now forward to the default implementation defined in the parent class
-    return parent::instance_config_save($data);
-    }
-
-    public function html_attributes() {
-    	$attributes = parent::html_attributes(); // Get default values
-   	$attributes['class'] .= ' block_'. $this->name(); // Append our class to class attribute
-   	return $attributes;
-    }
-
-    public function instance_allow_multiple() {
-  	return false;
-    }
-	
-    public function hide_header() {
-  	return false;
-    }
-
-    function instance_allow_config() {
-    	return true;
-    }
-
     public function cron() {
-    	mtrace( "Hey, my cron script is running" );
+        
+    	global $DB; // Global database object
  
-    	// do something
+    	// Get the instances of the block
+    	$instances = $DB->get_records( 'block_instances', array('blockname'=>'campusclash') );
  
-    	return true;
+    	// Iterate over the instances
+    	foreach ($instances as $instance) {
+ 
+            // Recreate block object
+            $block = block_instance('campusclash', $instance);
+ 
+            // $block is now the equivalent of $this in 'normal' block
+            // usage, e.g.
+            $someconfigitem = $block->config->item2;
+        }
     }
 
-    function has_config() {return true;}
-}
 
+
+}   // Here's the closing bracket for the class definition
