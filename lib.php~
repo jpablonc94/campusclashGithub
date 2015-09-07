@@ -53,10 +53,10 @@ function block_campusclash_print_points() {
         return '';
     }
 
-    $totalpoints = block_ranking_get_student_points($USER->id);
-    $totalpoints = $totalpoints->points != null ? $totalpoints->points : '0';
-    $totalpoints = $totalpoints . " " . strtolower(get_string('table_points', 'block_ranking'));
-    
+    //$totalpoints = block_ranking_get_student_points($USER->id);
+    //$totalpoints = $totalpoints->points != null ? $totalpoints->points : '0';
+    //$totalpoints = $totalpoints . " " . strtolower(get_string('table_points', 'block_ranking'));
+    $totalpoints = '0';
     $table = new html_table();
     $table->attributes = array("class" => "rankingTable table table-striped generaltable");
     

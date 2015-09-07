@@ -1,4 +1,10 @@
 <?php
+
+defined('MOODLE_INTERNAL') || die();
+
+require_once(dirname(__FILE__) . '/../../config.php');
+require_once($CFG->dirroot.'/blocks/campusclash/lib.php');
+
 class block_campusclash extends block_base {
     
     public function init() {
@@ -21,7 +27,7 @@ class block_campusclash extends block_base {
     }
 
     public function get_content() {
-        global $COURSE, $DB, $PAGE;
+        global $COURSE, $DB, $PAGE, $USER;
 
 	if ($this->content !== null) {
             return $this->content;
@@ -32,7 +38,7 @@ class block_campusclash extends block_base {
 
 	//Texto que aparece en el bloque
         $this->content         =  new stdClass;
-        $this->content->text   = 'The content of our CampusCLASH block!';
+        $this->content->text   = 'Primera versión de pruebas';
 
 	$context = context_course::instance($COURSE->id);
 	
@@ -42,9 +48,15 @@ class block_campusclash extends block_base {
 	} else {
             $this->content->footer = '';
 	}
-        
+
+	//$campusclashtable = block_campusclash_print_student(); 
+        //$a=block_campusclash_print_student_points();	
 	
-	// Check to see if we are in editing mode and that we can manage pages.
+	$this->content->text .= block_campusclash_print_points() ;	
+	//$this->content->text .= '<p style="font-size:20px;text-align:center;">'.$USER->username.'</p>';
+	
+
+	/*// Check to see if we are in editing mode and that we can manage pages.
 	$canmanage = has_capability('block/campusclash:managepages', $context) && $PAGE->user_is_editing($this->instance->id);
 	$canview = has_capability('block/campusclash:viewpages', $context);
 
@@ -83,7 +95,7 @@ class block_campusclash extends block_base {
             }
     	    $this->content->text .= html_writer::end_tag('ul');
 	}
-
+	*/
         return $this->content;
     }
 
@@ -102,13 +114,13 @@ class block_campusclash extends block_base {
     }
     
     public function instance_allow_multiple() {
-        return true;
+        return false;
     }
     
     function has_config() {return true;}
 
     public function hide_header() {
-        return true;
+        return false;
     }
 
     public function html_attributes() {

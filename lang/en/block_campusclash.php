@@ -35,6 +35,7 @@ $string['pluginname'] = 'CampusClash';
 $string['campusclash'] = 'CampusClash';
 $string['campusclash:addinstance'] = 'Add a new CampusClash block';
 $string['campusclash:myaddinstance'] = 'Add a new CampusClash block to the My Moodle page';
+$string['defaulttitle'] = 'CampusClash';
 
 //Edit form setting
 $string['blockstring'] = 'Block String';
