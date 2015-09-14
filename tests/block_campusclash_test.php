@@ -16,10 +16,10 @@
 
 
 /**
- * Ranking block test class
+ * CampusClash block test class
  *
  * @package    contrib
- * @subpackage block_ranking
+ * @subpackage block_campusclash
  * @copyright  2015 Willian Mano http://willianmano.net
  * @authors    Willian Mano
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -28,10 +28,10 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Unit tests for {@link block_ranking}.
- * @group block_ranking_group
+ * Unit tests for {@link block_campusclash}.
+ * @group block_campusclash_group
  */
-class block_ranking_testcase extends advanced_testcase {
+class block_campusclash_testcase extends advanced_testcase {
     public function test_adding() {
         $this->resetAfterTest(true);
 

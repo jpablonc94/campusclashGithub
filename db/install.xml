@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="blocks/campusclash/db" VERSION="20150903" COMMENT="XMLDB file for Moodle blocks/campusclash"
+<XMLDB PATH="blocks/campusclash/db" VERSION="2014022000" COMMENT="XMLDB file for Moodle blocks/campusclash"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -32,5 +32,3 @@
     </TABLE>
   </TABLES>
 </XMLDB>
-
-

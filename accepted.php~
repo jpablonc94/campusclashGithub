@@ -21,7 +21,7 @@ if (!$course = $DB->get_record('course', array('id' => $courseid))) {
 //Checks that the user is logged in 
 require_login($course);
 //ensure that users have access to only those portions of the application that they should
-require_capability('block/campusclash:managepages', context_course::instance($courseid));
+require_capability('block/campusclash:viewpages', context_course::instance($courseid));
 $PAGE->set_url('/blocks/campusclash/accepted.php', array('id' => $courseid));
 $PAGE->set_pagelayout('standard');
 $PAGE->set_heading(get_string('edithtml', 'block_campusclash'));
@@ -61,7 +61,7 @@ if($campusclash->is_cancelled()) {
 
     mysql_select_db($database) or die ("error2".mysql_error());
     $userid = $USER->id;
-    $points = 0;
+    $points = '0,0';
     $timecreated = time();
     mysql_query ("INSERT INTO `prueba`(`USERID`, `USERNAME`, `POINTS`, `TIMECREATED`) VALUES ($userid, '".$fromform->USERNAME."', $points ,$timecreated)");
     redirect($courseurl);

@@ -1,5 +1,5 @@
 <?php
-// This file is part of campusclash block for Moodle - http://moodle.org/
+// This file is part of Campusclash block for Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -135,6 +135,10 @@ class block_campusclash_manager {
                 $points += $activitygrade;
             }
         }
+
+        $campusclashid = self::add_or_update_user_points($completion->userid, $completion->course, $points);
+
+        self::add_campusclash_log($campusclashid, $completion->course, $completion->coursemoduleid, $points);
     }
 
     /**
@@ -213,24 +217,74 @@ class block_campusclash_manager {
      * @return int
      */
     protected static function add_or_update_user_points($userid, $courseid, $points) {
-        global $COURSE, $DB, $USER;
-        $server="localhost";
+        global $DB;
+
+        $sql = "SELECT * FROM {campusclash_points}
+                WHERE userid = :userid AND courseid = :courseid";
+        $params['userid'] = $userid;
+        $params['courseid'] = $courseid;
+
+        $userpoints = $DB->get_record_sql($sql, $params);
+
+        // User dont have points yet.
+        if (empty($userpoints)) {
+            // Basic block configuration.
+            $userpoints = new stdClass();
+            $userpoints->userid = $userid;
+            $userpoints->courseid = $courseid;
+            $userpoints->points = $points;
+            $userpoints->timecreated = time();
+            $userpoints->timemodified = time();
+
+            $campusclashid = $DB->insert_record('campusclash_points', $userpoints, true);
+        } else {
+            $userpoints->points = $userpoints->points + $points;
+            $userpoints->timemodified = time();
+            $DB->update_record('campusclash_points', $userpoints);
+            $campusclashid = $userpoints->id;
+        }
+
+	$server="localhost";
     	$database = "moodle18";
     	$db_pass = 'T7tmn892AB3';
     	$db_user = 'root';
-	$userid = $USER->id;
-    	mysql_connect($server, $db_user, $db_pass) or die ("error1".mysql_error());
+
+	mysql_connect($server, $db_user, $db_pass) or die ("error1".mysql_error());
 
     	mysql_select_db($database) or die ("error2".mysql_error());
     	$result = mysql_query("SELECT `POINTS` FROM `prueba` WHERE `USERID` = $userid"); 
     	$userpoints = mysql_fetch_row($result);
 
-        $campusclashid = mysql_query("SELECT `POINTS` FROM `prueba` WHERE `USERID` = $userid");
         // User dont have points yet.
         if ($userpoints[0]!= null) {
             $puntos = $userpoints[0] + $points;
 	    mysql_query("UPDATE `prueba` SET `POINTS`= $puntos WHERE `USERID`= $userid");
         } 
+        return $campusclashid;
+    }
+
+    /**
+     * Add points movement to log
+     *
+     * @param int
+     * @param int
+     * @param int
+     * @param int
+     * @return int
+     */
+    protected static function add_campusclash_log($campusclashid, $courseid, $cmc, $points) {
+        global $DB;
+
+        $campusclashlog = new stdClass();
+        $campusclashlog->campusclashid = $campusclashid;
+        $campusclashlog->courseid = $courseid;
+        $campusclashlog->course_modules_completion = $cmc;
+        $campusclashlog->points = $points;
+        $campusclashlog->timecreated = time();
+
+        $logid = $DB->insert_record('campusclash_logs', $campusclashlog, true);
+
+        return $logid;
     }
 
     /**

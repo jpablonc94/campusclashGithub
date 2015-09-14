@@ -51,7 +51,7 @@ class block_campusclash extends block_base {
 	}	
 
 	//Check to see if we are in editing mode and that we can manage pages.
-	$canmanage = has_capability('block/campusclash:managepages', $context) && $PAGE->user_is_editing($this->instance->id);
+	$canmanage = has_capability('block/campusclash:managepages', $context);// && $PAGE->user_is_editing($this->instance->id);
 	$canview = has_capability('block/campusclash:viewpages', $context);
 
 	$studentpoints = block_campusclash_get_student_points($USER->id);
@@ -60,6 +60,9 @@ class block_campusclash extends block_base {
             $this->content->text .= block_campusclash_print_student_points($studentpoints);
 	} else {
 	    if ($canmanage) {
+            	    $acepto = 'Ver lista de usuarios';
+		    $accepted = '';
+	    } else {
             	    $pageparam = array('blockid' => $this->instance->id, 
                     	'courseid' => $COURSE->id, 
                     	'id' => $campusclashpage->id);
@@ -67,10 +70,6 @@ class block_campusclash extends block_base {
              	    $checkpicurl = new moodle_url('/blocks/campusclash/pix/check_opt.png');
             	    $accepted = html_writer::link($acceptedurl, html_writer::tag('img', '', array('src' => $checkpicurl, 'alt' => get_string('edit'))));
 		    $acepto = 'ACEPTO';
-
-	    } else {
-            	    $acepto = 'Ver lista de usuarios';
-		    $accepted = '';
 	    }		
     	    
 	    $this->content->text .= '<p>Si aceptas entrarás a formar parte del mundo CampusCLASH! podrás ser beneficiario de grandes premios!</p>';	    
