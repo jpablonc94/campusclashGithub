@@ -54,14 +54,6 @@ class block_campusclash_helper {
 
             $enablemultipleattempts = $DB->get_record('config_plugins', array('plugin' => 'block_campusclash', 'name' => 'enable_multiple_quizz_attempts'));
 
-            if (isset($enablemultipleattempts) && $enablemultipleattempts->value == 0) {
-                $isrepeated = self::is_completion_repeated($event->courseid, $event->relateduserid, $event->contextinstanceid);
-                
-                if ($isrepeated) {
-                    return;
-                }
-            }
-
             $objectid = self::get_coursemodule_instance($event->contextinstanceid, $event->relateduserid);
 
             if ($objectid) {
@@ -74,10 +66,6 @@ class block_campusclash_helper {
         }
 
         if (!self::is_completion_completed($event->objectid)) {
-            return;
-        }
-
-        if (self::is_completion_repeated($event->courseid, $event->relateduserid, $event->contextinstanceid)) {
             return;
         }
 
@@ -145,32 +133,4 @@ class block_campusclash_helper {
         return (bool) $cmc->completionstate;
     }
 
-    /**
-     * Verify if the student already receives points for the completion before
-     *
-     * @param int $courseid
-     * @param int $userid
-     * @param int $cmcid
-     *
-     * @return mixed
-     */
-    protected static function is_completion_repeated($courseid, $userid, $cmcid) {
-        global $DB;
-
-        $sql = "SELECT
-                 count(*) as qtd
-                FROM {campusclash_points} p
-                INNER JOIN {campusclash_logs} l ON l.campusclashid = p.id
-                WHERE p.courseid = :courseid
-                AND p.userid = :userid
-                AND l.course_modules_completion = :cmcid";
-
-        $params['courseid'] = $courseid;
-        $params['userid'] = $userid;
-        $params['cmcid'] = $cmcid;
-
-        $qtd = $DB->get_record_sql($sql, $params);
-
-        return (int) $qtd->qtd;
-    }
 }

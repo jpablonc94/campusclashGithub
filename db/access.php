@@ -24,7 +24,7 @@
             'legacy' => array(
             	'guest' => CAP_PREVENT,
             	'student' => CAP_PREVENT,
-            	'teacher' => CAP_PREVENT,
+            	'teacher' => CAP_ALLOW,
             	'editingteacher' => CAP_ALLOW,
             	'coursecreator' => CAP_ALLOW,
             	'manager' => CAP_ALLOW

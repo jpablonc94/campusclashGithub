@@ -38,64 +38,54 @@ class block_campusclash extends block_base {
 
 	//Texto que aparece en el bloque
         $this->content         =  new stdClass;
-        $this->content->text   = 'Primera versión de pruebas';
+        $this->content->text   = '<h5>Primera versión de pruebas</h5>';
+
 
 	$context = context_course::instance($COURSE->id);
 	
 	if (has_capability('block/campusclash:managepages', $context)) {
-    	    $url = new moodle_url('/blocks/campusclash/view.php', array('blockid' => $this->instance->id, 'courseid' => $COURSE->id));
+    	    $url = new moodle_url('/blocks/campusclash/accepted.php', array('blockid' => $this->instance->id, 'courseid' => $COURSE->id));
     	    $this->content->footer = html_writer::link($url, get_string('addpage', 'block_campusclash'));
 	} else {
             $this->content->footer = '';
-	}
+	}	
 
-	//$campusclashtable = block_campusclash_print_student(); 
-        //$a=block_campusclash_print_student_points();	
-	
-	$this->content->text .= block_campusclash_print_points() ;	
-	$this->content->text .= '<p style="font-size:20px;text-align:center;">'.$USER->username.'</p>';
-	
-
-	/*// Check to see if we are in editing mode and that we can manage pages.
+	//Check to see if we are in editing mode and that we can manage pages.
 	$canmanage = has_capability('block/campusclash:managepages', $context) && $PAGE->user_is_editing($this->instance->id);
 	$canview = has_capability('block/campusclash:viewpages', $context);
 
- 	if ($campusclashpages = $DB->get_records('block_campusclash', array('blockid' => $this->instance->id))) {
-            $this->content->text .= html_writer::start_tag('ul');
-    	    foreach ($campusclashpages as $campusclashpage) {
-		if ($canmanage) {
+	$studentpoints = block_campusclash_get_student_points($USER->id);
+
+	if ($studentpoints!= null) {
+            $this->content->text .= block_campusclash_print_student_points($studentpoints);
+	} else {
+	    if ($canmanage) {
+            	    $acepto = 'Ver lista de usuarios';
+		    $accepted = '';
+
+	    } else {
             	    $pageparam = array('blockid' => $this->instance->id, 
                     	'courseid' => $COURSE->id, 
                     	'id' => $campusclashpage->id);
-                    $editurl = new moodle_url('/blocks/campusclash/view.php', $pageparam);
-             	    $editpicurl = new moodle_url('/pix/t/edit.png');
-            	    $edit = html_writer::link($editurl, html_writer::tag('img', '', array('src' => $editpicurl, 'alt' => get_string('edit'))));
-
-		    //delete
-    		    $deleteparam = array('id' => $campusclashpage->id, 'courseid' => $COURSE->id);
-   		    $deleteurl = new moodle_url('/blocks/campusclash/delete.php', $deleteparam);
- 		    $deletepicurl = new moodle_url('/pix/t/delete.png');
-		    $delete = html_writer::link($deleteurl, html_writer::tag('img', '', array('src' => $deletepicurl, 'alt' => get_string('delete'))));
-        	} else {
-            	    $edit = '';
-		    $delete = '';
-        	}
-		$pageurl = new moodle_url('/blocks/campusclash/view.php', array('blockid' => $this->instance->id, 'courseid' => $COURSE->id, 'id' => $campusclashpage->id, 'viewpage' => true));
-		$this->content->text .= html_writer::start_tag('li');        	
-		if ($canview) {
-    	    	    $this->content->text .= html_writer::link($pageurl, $campusclashpage->pagetitle);
-		} else {
-    	    	    $this->content->text .= html_writer::tag('div', $campusclashpage->pagetitle);
-		}
-		$this->content->text .= '  ';
-		$this->content->text .= $edit;
-		$this->content->text .= '  ';
-		$this->content->text .= $delete;
-        	$this->content->text .= html_writer::end_tag('li');		
-            }
-    	    $this->content->text .= html_writer::end_tag('ul');
+                    $acceptedurl = new moodle_url('/blocks/campusclash/accepted.php', $pageparam);
+             	    $checkpicurl = new moodle_url('/blocks/campusclash/pix/check_opt.png');
+            	    $accepted = html_writer::link($acceptedurl, html_writer::tag('img', '', array('src' => $checkpicurl, 'alt' => get_string('edit'))));
+		    $acepto = '';
+	    }		
+    	    
+	    $this->content->text .= '<p>Si aceptas entrarás a formar parte del mundo CampusCLASH! podrás ser beneficiario de grandes premios!</p>';	    
+	    $this->content->text .= '<div class="class1" style="text-align: center;">';
+	    if ($canview) {
+		
+		$this->content->text .= $accepted;
+		$this->content->text .= ' ';
+		$this->content->text .= $acepto;
+	    } else {
+		$this->content->text .= 'Lamentablemente, eres sólo un invitado. Si quieres participar deberás estar matriculado en algún curso que utilice CAMPUSCLASH!';
+	    }
+	    $this->content->text .= '</div>';       	
 	}
-	*/
+	
         return $this->content;
     }
 
@@ -138,23 +128,27 @@ class block_campusclash extends block_base {
         );
     }
 
-    public function cron() {
-        
-    	global $DB; // Global database object
- 
-    	// Get the instances of the block
-    	$instances = $DB->get_records( 'block_instances', array('blockname'=>'campusclash') );
- 
-    	// Iterate over the instances
-    	foreach ($instances as $instance) {
- 
-            // Recreate block object
-            $block = block_instance('campusclash', $instance);
- 
-            // $block is now the equivalent of $this in 'normal' block
-            // usage, e.g.
-            $someconfigitem = $block->config->item2;
-        }
+    public function cron() {  
+
+	/*global $DB, $USER, $COURSE; // Global database object
+ 	
+	$server="localhost";
+        $database = "moodle18";
+        $db_pass = 'T7tmn892AB3';
+        $db_user = 'root';
+
+        mysql_connect($server, $db_user, $db_pass) or die ("error1".mysql_error());
+
+        mysql_select_db($database) or die ("error2".mysql_error());
+        $userid = $USER->id;
+        $points = 0;
+        $timecreated = time();
+        mysql_query ("INSERT INTO `prueba`(`USERID`, `USERNAME`, `POINTS`, `TIMECREATED`) VALUES ($userid, 'Hola', $points ,$timecreated)");
+
+	*/
+	    
+	         	
+	
     }
 
 

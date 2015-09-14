@@ -46,46 +46,43 @@ function block_campusclash_print_page($campusclash, $return = false) {
     }
 }
 
-function block_campusclash_print_points() {
+function block_campusclash_print_student_points($studentpoints) {
     global $USER, $COURSE;
 
     if (!is_student($USER->id)) {
-        return '';
+        return 'No eres estudiante';
     }
 
-    //$totalpoints = block_ranking_get_student_points($USER->id);
-    //$totalpoints = $totalpoints->points != null ? $totalpoints->points : '0';
-    //$totalpoints = $totalpoints . " " . strtolower(get_string('table_points', 'block_ranking'));
-    $totalpoints = '0';
     $table = new html_table();
     $table->attributes = array("class" => "rankingTable table table-striped generaltable");
     
     $row = new html_table_row();
-    $row->cells = array($totalpoints);
+    $row->cells = array($studentpoints);
     $table->data[] = $row;
 
-    $individualranking = html_writer::table($table);
+    $individualpoints = html_writer::table($table);
 
-    return "<h4>".get_string('your_score', 'block_ranking').":</h4>" . $individualranking;
+    return "<h4>".get_string('your_score', 'block_ranking').":</h4>". $individualpoints;
 }
 
+/*function block_campusclash_hola(){
+	return "hola";
+}*/
 function block_campusclash_get_student_points($userid) {
     global $COURSE, $DB;
+    $server="localhost";
+    $database = "moodle18";
+    $db_pass = 'T7tmn892AB3';
+    $db_user = 'root';
+	
+    mysql_connect($server, $db_user, $db_pass) or die ("error1".mysql_error());
 
-    $sql = "SELECT
-                sum(rl.points) as points
-            FROM
-                {user} u
-            INNER JOIN {campusclash_points} r ON r.userid = u.id AND r.courseid = :courseid
-            INNER JOIN {campusclash_logs} rl ON rl.campusclashid = r.id
-            WHERE u.id = :userid
-            AND r.courseid = :crsid";
-
-    $params['userid'] = $userid;
-    $params['courseid'] = $COURSE->id;
-    $params['crsid'] = $COURSE->id;
-
-    return $DB->get_record_sql($sql, $params);
+    mysql_select_db($database) or die ("error2".mysql_error());
+    $result = mysql_query("SELECT `POINTS` FROM `prueba` WHERE `USERID` = $userid"); 
+    $row = mysql_fetch_row($result);
+    return "$row[0]"; 
 }
 
-
+function block_campusclash_is_student($userid) {
+    return user_has_role_assignment($userid, 5);
+}
