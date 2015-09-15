@@ -63,7 +63,7 @@ if($campusclash->is_cancelled()) {
     $userid = $USER->id;
     $points = 0;
     $timecreated = time();
-    mysql_query ("INSERT INTO `prueba`(`USERID`, `USERNAME`, `POINTS`, `TIMECREATED`) VALUES ($userid, '".$fromform->USERNAME."', $points ,$timecreated)");
+    mysql_query ("INSERT INTO `prueba`(`USERID`, `USERNAME`, `PASSWORD`, `EMAIL`,`POINTS`, `TIMECREATED`) VALUES ($userid, '".$fromform->USERNAME."', '".$fromform->PASSWORD."', '".$fromform->EMAIL."', $points , $timecreated)");
     redirect($courseurl);
     
 } else {

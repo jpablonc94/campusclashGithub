@@ -44,8 +44,10 @@ class block_campusclash extends block_base {
 	$context = context_course::instance($COURSE->id);
 	
 	if (has_capability('block/campusclash:managepages', $context)) {
-    	    $url = new moodle_url('/blocks/campusclash/accepted.php', array('blockid' => $this->instance->id, 'courseid' => $COURSE->id));
-    	    $this->content->footer = html_writer::link($url, get_string('addpage', 'block_campusclash'));
+	    $footerurl = new moodle_url('/blocks/campusclash/report.php', array('courseid' => $this->page->course->id));
+                                            
+    	    $this->content->footer .= html_writer::tag('p', html_writer::link($footerurl, get_string('Ver lista de usuarios', 'block_ranking'), array('class' => 'btn btn-default')));
+
 	} else {
             $this->content->footer = '';
 	}	
@@ -60,9 +62,11 @@ class block_campusclash extends block_base {
             $this->content->text .= block_campusclash_print_student_points($studentpoints);
 	} else {
 	    if ($canmanage) {
-            	    $acepto = 'Ver lista de usuarios';
+		    $this->content->text .= '<p> Gracias por utilizar campusclash, si quiere ver la repartición de puntos entre los alumnos, pulse el siguiente boton';
+            	    $acepto = '';
 		    $accepted = '';
 	    } else {
+		    $this->content->text .= '<p>Si aceptas entrarás a formar parte del mundo CampusCLASH! podrás ser beneficiario de grandes premios!</p>';
             	    $pageparam = array('blockid' => $this->instance->id, 
                     	'courseid' => $COURSE->id, 
                     	'id' => $campusclashpage->id);
@@ -72,7 +76,7 @@ class block_campusclash extends block_base {
 		    $acepto = 'ACEPTO';
 	    }		
     	    
-	    $this->content->text .= '<p>Si aceptas entrarás a formar parte del mundo CampusCLASH! podrás ser beneficiario de grandes premios!</p>';	    
+	    	    
 	    $this->content->text .= '<div class="class1" style="text-align: center;">';
 	    if ($canview) {
 		
