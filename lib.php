@@ -64,14 +64,14 @@ function block_campusclash_print_student_points($studentpoints) {
 function block_campusclash_get_student_points($userid) {
     global $COURSE, $DB;
     $server="localhost";
-    $database = "moodle18";
+    $database = "campusclash";
     $db_pass = 'T7tmn892AB3';
     $db_user = 'root';
 	
     mysql_connect($server, $db_user, $db_pass) or die ("error1".mysql_error());
 
     mysql_select_db($database) or die ("error2".mysql_error());
-    $result = mysql_query("SELECT `POINTS` FROM `prueba` WHERE `USERID` = $userid"); 
+    $result = mysql_query("SELECT `points` FROM `usertbl` WHERE `moodle_id` = $userid"); 
     $row = mysql_fetch_row($result);
     return "$row[0]"; 
 }
