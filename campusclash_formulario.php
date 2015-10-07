@@ -19,7 +19,7 @@ class campusclash_formulario extends moodleform {
 	$mform->addRule('PASSWORD', null, 'required', null, 'client');
 
 	// add a email
-	$mform->addElement('text', 'EMAIL', get_string('nombredeusuraio', 'block_campusclash'));
+	$mform->addElement('text', 'EMAIL', get_string('emaildeusuraio', 'block_campusclash'));
 	$mform->addRule('EMAIL', null, 'required', null, 'client');
  
 	// add Form Buttons

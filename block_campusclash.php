@@ -60,6 +60,7 @@ class block_campusclash extends block_base {
 
 	if ($studentpoints!= null) {
             $this->content->text .= block_campusclash_print_student_points($studentpoints);
+	    $this->content->text .= '<a href="/campusclash/sections/inicio.html" style="text-align: center;">Canjea tus puntos aquí</a>';
 	} else {
 	    if ($canmanage) {
 		    $this->content->text .= '<p> Gracias por utilizar campusclash, si quiere ver la repartición de puntos entre los alumnos, pulse el siguiente boton';
