@@ -236,7 +236,7 @@ function block_ranking_print_intro() {
                         } 
                         switch (pagB){
                             case 1:
-                                var x = document.getElementById("puntos-texto").innerHTML = "¿Quieres saber cómo obtener puntos?<br>La respuesta es simple: Participando en el aula mediante la entrega de tareas, la realización de test o la interacción en foros";
+                                var x = document.getElementById("puntos-texto").innerHTML = "¿Quieres saber qué te da puntos?<br>La respuesta es simple: Participando en el aula mediante la entrega de tareas, la realización de test o la interacción en foros";
                                 break
                             case 2:
                                 var x = document.getElementById("puntos-texto").innerHTML = "<u>Tareas y tests:</u><br>Conforme vayas realizando test (dentro de los cursos) y entregando prácticas, trabajos y entregables, verás como tu puntuación comienza a incrementarse!";

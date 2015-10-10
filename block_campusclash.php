@@ -68,7 +68,7 @@ class block_campusclash extends block_base {
 	    } else {
             $pageparam = array('blockid' => $this->instance->id, 'courseid' => $COURSE->id, 'id' => $campusclashpage->id);
             $acceptedurl = new moodle_url('/blocks/campusclash/accepted.php', $pageparam);
-            $accepted = '<div style="margin:30px 80px 15px 80px">'.html_writer::tag('p', html_writer::link($acceptedurl, get_string('Registrate', 'block_campusclash'), array('class' => 'btn btn-default'))).'</div>';
+            $accepted = '<div style="margin:30px 80px 15px 80px">'.html_writer::tag('p', html_writer::link($acceptedurl, "Regístrate", array('class' => 'btn btn-default'))).'</div>';
          }		
     	    
 	    if ($canview) {		

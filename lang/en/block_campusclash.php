@@ -87,7 +87,7 @@ $string['editpage'] = 'Edit Page';
 $string['nombrecompleto'] = 'Nombre completo';
 $string['nombredeusuraio'] = 'Nombre de usuario';
 $string['passdeusuraio'] = 'Contraseña';
-$string['usernameheader'] = 'Header';
+$string['usernameheader'] = 'Datos requeridos';
 $string['emaildeusuraio'] = 'Email';
 
 $string['general'] = 'General';
