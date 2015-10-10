@@ -38,15 +38,15 @@ class block_campusclash extends block_base {
 
 	//Texto que aparece en el bloque
         $this->content         =  new stdClass;
-        $this->content->text   = '<h5>Primera versión de pruebas</h5>';
+        $this->content->text   = '<h4>Versión 1.0</h4>';
+        $this->content->text .= block_ranking_print_intro();
 
 
 	$context = context_course::instance($COURSE->id);
 	
 	if (has_capability('block/campusclash:managepages', $context)) {
 	    $footerurl = new moodle_url('/blocks/campusclash/report.php', array('courseid' => $this->page->course->id));
-                                            
-    	    $this->content->footer .= html_writer::tag('p', html_writer::link($footerurl, get_string('Ver lista de usuarios', 'block_ranking'), array('class' => 'btn btn-default')));
+        $this->content->footer .= '<div style="margin:20px 40px 0px 40px">'.html_writer::tag('p', html_writer::link($footerurl, get_string('Verlistadeusuarios', 'block_campusclash'), array('class' => 'btn btn-default'))).'</div>';
 
 	} else {
             $this->content->footer = '';
@@ -59,35 +59,23 @@ class block_campusclash extends block_base {
 	$studentpoints = block_campusclash_get_student_points($USER->id);
 
 	if ($studentpoints!= null) {
-            $this->content->text .= block_campusclash_print_student_points($studentpoints);
-	    $this->content->text .= '<a href="/campusclash/sections/inicio.html" style="text-align: center;">Canjea tus puntos aquí</a>';
+        $ccweb = "http://localhost/campusclashapp/public/index.php";
+        $this->content->text .= block_campusclash_print_student_points($studentpoints);
+	    $this->content->text .= '<a href='.$ccweb.' style="margin: 0px 35px;"><button>Canjea tus puntos aquí!</button></a>';
 	} else {
 	    if ($canmanage) {
-		    $this->content->text .= '<p> Gracias por utilizar campusclash, si quiere ver la repartición de puntos entre los alumnos, pulse el siguiente boton';
-            	    $acepto = '';
 		    $accepted = '';
 	    } else {
-		    $this->content->text .= '<p>Si aceptas entrarás a formar parte del mundo CampusCLASH! podrás ser beneficiario de grandes premios!</p>';
-            	    $pageparam = array('blockid' => $this->instance->id, 
-                    	'courseid' => $COURSE->id, 
-                    	'id' => $campusclashpage->id);
-                    $acceptedurl = new moodle_url('/blocks/campusclash/accepted.php', $pageparam);
-             	    $checkpicurl = new moodle_url('/blocks/campusclash/pix/check_opt.png');
-            	    $accepted = html_writer::link($acceptedurl, html_writer::tag('img', '', array('src' => $checkpicurl, 'alt' => get_string('edit'))));
-		    $acepto = 'ACEPTO';
-	    }		
+            $pageparam = array('blockid' => $this->instance->id, 'courseid' => $COURSE->id, 'id' => $campusclashpage->id);
+            $acceptedurl = new moodle_url('/blocks/campusclash/accepted.php', $pageparam);
+            $accepted = '<div style="margin:30px 80px 15px 80px">'.html_writer::tag('p', html_writer::link($acceptedurl, get_string('Registrate', 'block_campusclash'), array('class' => 'btn btn-default'))).'</div>';
+         }		
     	    
-	    	    
-	    $this->content->text .= '<div class="class1" style="text-align: center;">';
-	    if ($canview) {
-		
-		$this->content->text .= $accepted;
-		$this->content->text .= ' ';
-		$this->content->text .= $acepto;
+	    if ($canview) {		
+		    $this->content->text .= $accepted;
 	    } else {
-		$this->content->text .= 'Lamentablemente, eres sólo un invitado. Si quieres participar deberás estar matriculado en algún curso que utilice CAMPUSCLASH!';
-	    }
-	    $this->content->text .= '</div>';       	
+		    $this->content->text .= '<p style="text-align:justify;margin:20px;">Lamentablemente, no estás matriculado en este curso. Si quieres registrarte, debes hacerlo desde un curso donde este bloque esté activo y además, estés matriculado.</p>';
+	    }       	
 	}
 	
         return $this->content;

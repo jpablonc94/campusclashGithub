@@ -38,9 +38,10 @@ $string['campusclash:myaddinstance'] = 'Add a new CampusClash block to the My Mo
 $string['defaulttitle'] = 'CampusClash';
 
 //Edit form setting
-$string['blockstring'] = 'Block String';
+$string['blockstring'] = 'Texto de entrada';
 $string['blocktitle'] = 'Block Title';
 $string['configuration'] = 'Block CampusClash configuration';
+$string['blocksettings'] = 'Block Settings';
 
 $string['blockname'] = 'CAMPUS CLASH Block';
 $string['addpage'] = 'Add a Page';
@@ -80,7 +81,38 @@ $string['viewfile'] = 'View/Download File';
 $string['confirmdelete'] = 'Confirm Delete';
 $string['deletepage'] = 'Do you really want to delete \'$a\'';
 
+$string['edithtml'] = 'Edit HTML';
+$string['campusclashsettings'] = 'CampusClash Settings';
+$string['editpage'] = 'Edit Page';
+$string['nombrecompleto'] = 'Nombre completo';
+$string['nombredeusuraio'] = 'Nombre de usuario';
+$string['passdeusuraio'] = 'Contraseña';
+$string['usernameheader'] = 'Header';
+$string['emaildeusuraio'] = 'Email';
 
+$string['general'] = 'General';
+$string['nostudents'] = 'No hay estudiantes';
+$string['table_position'] = 'Posición';
+$string['table_name'] = 'Nombre';
+$string['table_points'] = 'Puntos';
+$string['your_score'] = 'Tus puntos';
+$string['report_head'] = 'Ranking de tus estudiantes por puntos';
 
+$string['Registrate'] = 'Regístrate';
+$string['Verlistadeusuarios'] = 'Ver lista de participantes';
+$string['campusclashsize_help'] = 'Size Help';
+$string['no'] = 'No';
+$string['enable_multiple_quizz_attempts'] = 'General';
+$string['campusclashsize'] = 'Ranking Size';
+$string['resourcepoints'] = 'Resource Points';
+$string['assignpoints'] = 'Assign Points';
+$string['forumpoints'] = 'Forum Points';
+$string['pagepoints'] = 'Page Points';
+$string['workshoppoints'] = 'Workshop Points';
+$string['defaultpoints'] = 'Default Points';
+$string['enable_multiple_quizz_attempts_help'] = 'Enable Multiple Quizz Attempts Help';
+$string['yes'] = 'Yes';
 
-
+$string['definition'] = '¿Qué es?';
+$string['points'] = 'Puntos';
+$string['contact'] = 'Contacto';

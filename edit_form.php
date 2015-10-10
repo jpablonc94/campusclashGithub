@@ -7,11 +7,7 @@ class block_campusclash_edit_form extends block_edit_form {
         // Section header title according to language file.
         $mform->addElement('header', 'configheader', get_string('blocksettings', 'block'));
 	
-	$mform->addElement('text', 'config_title', get_string('blocktitle', 'block_campusclash'));
-        $mform->setDefault('config_title', 'default value');
-        $mform->setType('config_title', PARAM_TEXT);
- 
-        // A sample string variable with a default value.
+	    // A sample string variable with a default value.
         $mform->addElement('text', 'config_text', get_string('blockstring', 'block_campusclash'));
         $mform->setDefault('config_text', 'default value');
         $mform->setType('config_text', PARAM_RAW);        

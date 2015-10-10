@@ -245,20 +245,20 @@ class block_campusclash_manager {
         }
 
 	$server="localhost";
-    	$database = "moodle18";
+    	$database = "campusclash";
     	$db_pass = 'T7tmn892AB3';
     	$db_user = 'root';
 
 	mysql_connect($server, $db_user, $db_pass) or die ("error1".mysql_error());
 
     	mysql_select_db($database) or die ("error2".mysql_error());
-    	$result = mysql_query("SELECT `POINTS` FROM `prueba` WHERE `USERID` = $userid"); 
+    	$result = mysql_query("SELECT `points` FROM `usertbl` WHERE `moodle_id` = $userid"); 
     	$userpoints = mysql_fetch_row($result);
 
         // User dont have points yet.
         if ($userpoints[0]!= null) {
             $puntos = $userpoints[0] + $points;
-	    mysql_query("UPDATE `prueba` SET `POINTS`= $puntos WHERE `USERID`= $userid");
+	    mysql_query("UPDATE `usertbl` SET `points`= $puntos WHERE `moodle_id`= $userid");
         } 
         return $campusclashid;
     }

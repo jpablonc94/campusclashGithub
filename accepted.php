@@ -53,7 +53,7 @@ if($campusclash->is_cancelled()) {
     // We need to add code to appropriately act on and store the submitted data
 
     $server="localhost";
-    $database = "moodle18";
+    $database = "campusclash";
     $db_pass = 'T7tmn892AB3';
     $db_user = 'root';
 
@@ -63,7 +63,14 @@ if($campusclash->is_cancelled()) {
     $userid = $USER->id;
     $points = 0;
     $timecreated = time();
-    mysql_query ("INSERT INTO `prueba`(`USERID`, `USERNAME`, `PASSWORD`, `EMAIL`,`POINTS`, `TIMECREATED`) VALUES ($userid, '".$fromform->USERNAME."', '".$fromform->PASSWORD."', '".$fromform->EMAIL."', $points , $timecreated)");
+    $fullname = $fromform->FULLNAME;
+    $username = $fromform->USERNAME;
+    $email = $fromform->EMAIL;
+    $password = $fromform->PASSWORD;
+    $isstudent = true;
+
+    mysql_query ("INSERT INTO `usertbl`(`moodle_id`, `full_name`, `email`, `username`, `password`,`points`, `student`, `timecreated`) 
+        VALUES ('".$userid."', '".$fullname."', '".$email."', '".$username."', '".$password."', '".$points."', '".$isstudent."', '".$timecreated."')");
     redirect($courseurl);
     
 } else {

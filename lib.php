@@ -64,14 +64,14 @@ function block_campusclash_print_student_points($studentpoints) {
 function block_campusclash_get_student_points($userid) {
     global $COURSE, $DB;
     $server="localhost";
-    $database = "moodle18";
+    $database = "campusclash";
     $db_pass = 'T7tmn892AB3';
     $db_user = 'root';
 	
     mysql_connect($server, $db_user, $db_pass) or die ("error1".mysql_error());
 
     mysql_select_db($database) or die ("error2".mysql_error());
-    $result = mysql_query("SELECT `POINTS` FROM `prueba` WHERE `USERID` = $userid"); 
+    $result = mysql_query("SELECT `points` FROM `usertbl` WHERE `moodle_id` = $userid"); 
     $row = mysql_fetch_row($result);
     return "$row[0]"; 
 }
@@ -136,6 +136,160 @@ function block_campusclash_print_students($rankinggeral) {
             </div>';
 }
 
+function block_ranking_print_intro() {
+    global $PAGE;
+
+    $PAGE->requires->js_init_call('M.block_ranking.init_tabview');
+    $ccweb = "http://localhost/campusclashapp/public/index.php";
+    $left = new moodle_url('/blocks/campusclash/pix/moveleft.gif');
+    $right = new moodle_url('/blocks/campusclash/pix/removeright.gif');
+    $bg1 = new moodle_url('/blocks/campusclash/pix/header-bg.jpg');
+    $bg2 = new moodle_url('/blocks/campusclash/pix/intro-bg2.jpg');
+    $bg3 = new moodle_url('/blocks/campusclash/pix/home-bg.jpg');
+    $margin = "margin:0px 30px";
+    $nextA = "nextA()";
+    $previousA = "previousA()";
+    $nextB = "nextB()";
+    $previousB = "previousB()";
+    $azulclaro = "color:#0099FF;";
+    return '<div id="ranking-tabs">
+                <ul>
+                    <li><a href="#quees" onclick="fondo1()">'.get_string('definition', 'block_campusclash').'</a></li>
+                    <li><a href="#puntos" onclick="fondo2()">'.get_string('points', 'block_campusclash').'</a></li>
+                    <li><a href="#contacto" onclick="fondo3()">'.get_string('contact', 'block_campusclash').'</a></li>
+                </ul>
+                <div id="fondo" style="width: 238px;height: 220px;border: 3px double gray; background: url('.$bg1.');">
+                    <div id="quees">
+                        <h5 style="color:white">¿Qué es CampusClash?</h5>
+                        <h6 id="quees-texto" style="color:white;text-align:justify;font-size:13px">Antes de nada, darte la bienvenida y animarte a leer estas líneas, merecerá la pena.<br>El objetivo final de <a href='.$ccweb.' style='.$azulclaro.'>CampusClash</a> es hacer tu paso por el aula virtual, más entretenido. ¿Quieres saber más?</h6>                        
+                        <div style="color:white;margin:10px 0px 20px 45px">
+                            <button onclick="previousA()">Volver</button>
+                            <button onclick="nextA()">Seguir</button>                            
+                        </div>
+                    </div>
+                    <div id="puntos">
+                        <h5 style="color:white">Acerca de los puntos</h5>
+                        <h6 id="puntos-texto" style="color:white;text-align:justify;font-size:13px">¿Quieres saber cómo obtener puntos?<br>La respuesta es simple: Participando en el aula mediante la entrega de tareas, la realización de test o la interacción en foros.</h6>
+                        <div style="color:white;margin:10px 0px 20px 45px">
+                            <button onclick="previousB()">Volver</button>
+                            <button onclick="nextB()">Seguir</button>
+                        </div>
+                    </div>
+                    <div id="contacto">
+                        <h5 style="color:white">¿Alguna otra duda?</h5>
+                        <h6 style="color:white;text-align:justify;font-size:13px">Si alguno de los apartados no ha quedado claro o tienes cualquier otra pregunta acerca de este bloque, puedes enviar un correo a la siguiente dirección:</h6>
+                        <h6 style="color:white;text-align:center;font-size:13px">jpablonc94@gmail.com</h6>
+                        <h6 style="color:white;text-align:justify;font-size:13px">Espero que te animes a probarlo y que te sea de utilidad!</h6>
+                    </div>
+                </div>
+                <script>
+                    var pagA = 1;
+                    function nextA(){
+                        pagA = pagA+1;
+                        if(pagA>4){
+                            pagA=4;
+                        } 
+                        switch (pagA){
+                            case 1:
+                                var x = document.getElementById("quees-texto").innerHTML = "Antes de nada, darte la bienvenida y animarte a leer estas líneas, merecerá la pena.<br>El objetivo final de <a href='.$ccweb.' style='.$azulclaro.'>CampusClash</a> es hacer tu paso por el aula virtual, más entretenido. ¿Quieres saber más?";
+                                break
+                            case 2:
+                                var x = document.getElementById("quees-texto").innerHTML = "<u>Puntuación:</u><br>Como podréis observar debajo, si os habéis registrado, os ha sido asignada una puntuación. Dichos puntos irán incrementando conforme vayáis participando dentro del aula.";
+                                break
+                            case 3:
+                                var x = document.getElementById("quees-texto").innerHTML = "<u>Puntuación:</u><br>¿Quieres saber qué hacer con los puntos? Te recomiendo visitar la web haciendo click en el botón de más abajo o leyendo el aparatado Puntos de este bloque.";
+                                break
+                            case 4:
+                                var x = document.getElementById("quees-texto").innerHTML = "<u>Página web:</u><br>Este bloque es solo la puerta a la verdadera esencia de esta idea. Si queréis ver las posibilidades que brinda CampusClash, os recomiendo visitar la <a href='.$ccweb.' style='.$azulclaro.'>página web</a>.";
+                                break
+                            default:                                 
+                        }           
+                    }
+
+                    function previousA(){
+                        pagA = pagA-1;
+                        if(pagA<1){
+                            pagA = 1
+                        } 
+                        switch (pagA){
+                            case 1:
+                                var x = document.getElementById("quees-texto").innerHTML = "Antes de nada, darte la bienvenida y animarte a leer estas líneas, merecerá la pena.<br>El objetivo final de <a href='.$ccweb.' style='.$azulclaro.'>CampusClash</a> es hacer tu paso por el aula virtual, más entretenido. ¿Quieres saber más?";
+                                break
+                            case 2:
+                                var x = document.getElementById("quees-texto").innerHTML = "<u>Puntuación:</u><br>Como podréis observar debajo, si os habéis registrado, os ha sido asignada una puntuación. Dichos puntos irán incrementando conforme vayáis participando dentro del aula.";
+                                break
+                            case 3:
+                                var x = document.getElementById("quees-texto").innerHTML = "<u>Puntuación:</u><br>¿Quieres saber qué hacer con los puntos? Te recomiendo visitar la web haciendo click en el botón de más abajo o leyendo el aparatado Puntos de este bloque.";
+                                break
+                            case 4:
+                                var x = document.getElementById("quees-texto").innerHTML = "<u>Página web:</u><br>Este bloque es solo la puerta a la verdadera esencia de esta idea. Si queréis ver las posibilidades que brinda CampusClash, os recomiendo visitar la <a href='.$ccweb.' style='.$azulclaro.'>página web</a>.";
+                                break
+                            default:                                 
+                        }         
+                    }
+
+                    var pagB = 1;
+                    function nextB(){
+                        pagB = pagB+1;
+                        if(pagB>4){
+                            pagB=4;
+                        } 
+                        switch (pagB){
+                            case 1:
+                                var x = document.getElementById("puntos-texto").innerHTML = "¿Quieres saber cómo obtener puntos?<br>La respuesta es simple: Participando en el aula mediante la entrega de tareas, la realización de test o la interacción en foros";
+                                break
+                            case 2:
+                                var x = document.getElementById("puntos-texto").innerHTML = "<u>Tareas y tests:</u><br>Conforme vayas realizando test (dentro de los cursos) y entregando prácticas, trabajos y entregables, verás como tu puntuación comienza a incrementarse!";
+                                break
+                            case 3:
+                                var x = document.getElementById("puntos-texto").innerHTML = "<u>Foros:</u><br>Dentro de los distintos cursos, los profesores pueden abrir foros de debate. Si participáis en ellos, también recibiréis puntos!<br>Hablad con vuestros profesores y acordad temas que os interesen.";
+                                break
+                            case 4:
+                                var x = document.getElementById("puntos-texto").innerHTML = "<u>Utilidad de los puntos:</u><br>La puntuación servirá para dos fines: Poder canjearlos en una tienda online por premios y tener una posición en un ranking general. Ambas cosas estarán situadas dentro de la <a href='.$ccweb.' style='.$azulclaro.'>página web</a>.";
+                                break
+                            default:                                 
+                        }           
+                    }
+
+                    function previousB(){
+                        pagB = pagB-1;
+                        if(pagB<1){
+                            pagB = 1
+                        } 
+                        switch (pagB){
+                            case 1:
+                                var x = document.getElementById("puntos-texto").innerHTML = "¿Quieres saber qué te da puntos?<br>La respuesta es simple: Participando en el aula mediante la entrega de tareas, la realización de test o la interacción en foros";
+                                break
+                            case 2:
+                                var x = document.getElementById("puntos-texto").innerHTML = "<u>Tareas y tests:</u><br>Conforme vayas realizando test (dentro de los cursos) y entregando prácticas, trabajos y entregables, verás como tu puntuación comienza a incrementarse!";
+                                break
+                            case 3:
+                                var x = document.getElementById("puntos-texto").innerHTML = "<u>Foros:</u><br>Dentro de los distintos cursos, los profesores pueden abrir foros de debate. Si participáis en ellos, también recibiréis puntos!<br>Hablad con vuestros profesores y acordad temas que os interesen.";
+                                break
+                            case 4:
+                                var x = document.getElementById("puntos-texto").innerHTML = "<u>Utilidad de los puntos:</u><br>La puntuación servirá para dos fines: Poder canjearlos en una tienda online por premios y tener una posición en un ranking general. Ambas cosas estarán situadas dentro de la <a href='.$ccweb.' style='.$azulclaro.'>la página web</a>.";
+                                break
+                            default:                                 
+                        }         
+                    }
+
+                    function fondo1(){
+                        var x = document.getElementById("fondo");
+                        x.style.background = "url('.$bg1.')";          
+                    }
+                    function fondo2(){
+                        var x = document.getElementById("fondo");
+                        x.style.background = "url('.$bg2.')";          
+                    }
+                    function fondo3(){
+                        var x = document.getElementById("fondo");
+                        x.style.background = "url('.$bg3.')";         
+                    }
+                </script>
+
+            </div>';
+}
+
 function block_campusclash_generate_table($data) {
     global $USER, $OUTPUT;
 
@@ -144,7 +298,7 @@ function block_campusclash_generate_table($data) {
     }
 
     $table = new html_table();
-    $table->attributes = array("class" => "rankingTable table table-striped generaltable");
+    $table->attributes = array("class" => "campusclashTable table table-striped generaltable");
     $table->head = array(
                         get_string('table_position', 'block_campusclash'),
                         get_string('table_name', 'block_campusclash'),
