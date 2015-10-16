@@ -68,11 +68,75 @@ if($campusclash->is_cancelled()) {
     $email = $fromform->EMAIL;
     $password = $fromform->PASSWORD;
     $isstudent = true;
+    $style="color:red;";
 
-    mysql_query ("INSERT INTO `usertbl`(`moodle_id`, `full_name`, `email`, `username`, `password`,`points`, `student`, `timecreated`) 
-        VALUES ('".$userid."', '".$fullname."', '".$email."', '".$username."', '".$password."', '".$points."', '".$isstudent."', '".$timecreated."')");
-    redirect($courseurl);
-    
+    $nuevo_usuario=mysql_query("SELECT `username` FROM `usertbl` WHERE `username`='$username'");
+    if(mysql_num_rows($nuevo_usuario)>0)
+    {
+        $site = get_site();
+        echo $OUTPUT->header();
+        echo "<p class='avisos' style=$style>El nombre de usuario ya existe, prueba con otro.</p>";
+        if ($id) {
+            $campusclashpage = $DB->get_record('block_campusclash', array('id' => $id));
+            if($viewpage) {
+                block_campusclash_print_page($campusclashpage);
+            } else {
+                $campusclash->set_data($campusclashpage);
+                $campusclash->display();
+            }
+        } else {
+            $campusclash->display();
+        }
+        echo $OUTPUT->footer();
+    }
+    // ------------ Si no esta registrado el usuario continua el script
+    else
+    {
+        // ==============================================
+        // Comprobamos si el email esta registrado
+        if(filter_var($email, FILTER_VALIDATE_EMAIL)){
+
+            $nuevo_email=mysql_query("SELECT `email` FROM `usertbl` WHERE `email`='$email'");
+            if(mysql_num_rows($nuevo_email)>0) {
+                $site = get_site();
+                echo $OUTPUT->header();
+                echo "<p class='avisos' style=$style>El email ya existe, prueba con otro.</p>";
+                if ($id) {
+                    $campusclashpage = $DB->get_record('block_campusclash', array('id' => $id));
+                    if($viewpage) {
+                        block_campusclash_print_page($campusclashpage);
+                    } else {
+                        $campusclash->set_data($campusclashpage);
+                        $campusclash->display();
+                    }
+                } else {
+                    $campusclash->display();
+                }
+                echo $OUTPUT->footer();
+            } else { // ------------ Si no esta registrado el e-mail continua el script
+
+                mysql_query ("INSERT INTO `usertbl`(`moodle_id`, `full_name`, `email`, `username`, `password`,`points`, `student`, `timecreated`) 
+                            VALUES ('".$userid."', '".$fullname."', '".$email."', '".$username."', '".$password."', '".$points."', '".$isstudent."', '".$timecreated."')");
+                            redirect($courseurl);
+            }
+        } else {
+            $site = get_site();
+            echo $OUTPUT->header();
+            echo "<p class='avisos' style=$style>El formato del email no es correcto, debe seguir la siguiente estructura: example@example.example</p>";
+            if ($id) {
+                $campusclashpage = $DB->get_record('block_campusclash', array('id' => $id));
+                if($viewpage) {
+                    block_campusclash_print_page($campusclashpage);
+                } else {
+                    $campusclash->set_data($campusclashpage);
+                    $campusclash->display();
+                }
+            } else {
+                $campusclash->display();
+            }
+            echo $OUTPUT->footer();
+        }
+    }
 } else {
     
    // form didn't validate or this is the first display

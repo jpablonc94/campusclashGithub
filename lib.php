@@ -169,7 +169,7 @@ function block_ranking_print_intro() {
                     </div>
                     <div id="puntos">
                         <h5 style="color:white">Acerca de los puntos</h5>
-                        <h6 id="puntos-texto" style="color:white;text-align:justify;font-size:13px">¿Quieres saber cómo obtener puntos?<br>La respuesta es simple: Participando en el aula mediante la entrega de tareas, la realización de test o la interacción en foros.</h6>
+                        <h6 id="puntos-texto" style="color:white;text-align:justify;font-size:13px">¿Quieres saber cómo conseguir más puntos?<br>La respuesta es simple: Participando en el aula mediante la entrega de tareas, la realización de test o la interacción en foros.</h6>
                         <div style="color:white;margin:10px 0px 20px 45px">
                             <button onclick="previousB()">Volver</button>
                             <button onclick="nextB()">Seguir</button>
@@ -236,7 +236,7 @@ function block_ranking_print_intro() {
                         } 
                         switch (pagB){
                             case 1:
-                                var x = document.getElementById("puntos-texto").innerHTML = "¿Quieres saber qué te da puntos?<br>La respuesta es simple: Participando en el aula mediante la entrega de tareas, la realización de test o la interacción en foros";
+                                var x = document.getElementById("puntos-texto").innerHTML = "¿Quieres saber cómo conseguir más puntos?<br>La respuesta es simple: Participando en el aula mediante la entrega de tareas, la realización de test o la interacción en foros";
                                 break
                             case 2:
                                 var x = document.getElementById("puntos-texto").innerHTML = "<u>Tareas y tests:</u><br>Conforme vayas realizando test (dentro de los cursos) y entregando prácticas, trabajos y entregables, verás como tu puntuación comienza a incrementarse!";
@@ -258,7 +258,7 @@ function block_ranking_print_intro() {
                         } 
                         switch (pagB){
                             case 1:
-                                var x = document.getElementById("puntos-texto").innerHTML = "¿Quieres saber qué te da puntos?<br>La respuesta es simple: Participando en el aula mediante la entrega de tareas, la realización de test o la interacción en foros";
+                                var x = document.getElementById("puntos-texto").innerHTML = "¿Quieres saber cómo conseguir más puntos?<br>La respuesta es simple: Participando en el aula mediante la entrega de tareas, la realización de test o la interacción en foros";
                                 break
                             case 2:
                                 var x = document.getElementById("puntos-texto").innerHTML = "<u>Tareas y tests:</u><br>Conforme vayas realizando test (dentro de los cursos) y entregando prácticas, trabajos y entregables, verás como tu puntuación comienza a incrementarse!";

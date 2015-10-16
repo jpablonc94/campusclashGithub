@@ -6,8 +6,8 @@ class campusclash_formulario extends moodleform {
  
     function definition() {
  
-        $mform =& $this->_form;
-        // add group for text areas
+    $mform =& $this->_form;
+    // add group for text areas
 	$mform->addElement('header','usernameheader', get_string('usernameheader', 'block_campusclash'));
  
 	$mform->addElement('text', 'FULLNAME', get_string('nombrecompleto', 'block_campusclash'));
