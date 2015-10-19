@@ -1,13 +1,16 @@
 .block_campusclash .rankingTable tr.itsme {
     border: 2px solid #ffba00;
+    text-align: center;
 }
 
 .block_campusclash #ranking-tabs ul {
+    text-align: center;
     border: solid #15629F;
     border-width: 0 0 5px;
 }
 
 .block_campusclash #ranking-tabs ul li a {
+    text-align: center;
     background-color: #fff;
     margin-right: 2px;
     line-height: 1.42857143;
@@ -16,6 +19,7 @@
 }
 
 .block_campusclash #ranking-tabs ul .yui3-tab-selected .yui3-tab-label{
+    text-align: center;
     background: #15629F;
     border-color: #15629F;
 }

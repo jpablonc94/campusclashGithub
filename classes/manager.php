@@ -244,23 +244,116 @@ class block_campusclash_manager {
             $campusclashid = $userpoints->id;
         }
 
-	$server="localhost";
+	    $server="localhost";
     	$database = "campusclash";
     	$db_pass = 'T7tmn892AB3';
     	$db_user = 'root';
 
-	mysql_connect($server, $db_user, $db_pass) or die ("error1".mysql_error());
+	    mysql_connect($server, $db_user, $db_pass) or die ("error1".mysql_error());
 
     	mysql_select_db($database) or die ("error2".mysql_error());
-    	$result = mysql_query("SELECT `points` FROM `usertbl` WHERE `moodle_id` = $userid"); 
-    	$userpoints = mysql_fetch_row($result);
+    	$result = mysql_query("SELECT * FROM `usertbl` WHERE `moodle_id` = $userid"); 
+    	$row = mysql_fetch_assoc($result);
+        $userpoints = $row['points'];
+        $money = $row['monedas'];
+        $exp = $row['experiencia'];
 
         // User dont have points yet.
-        if ($userpoints[0]!= null) {
-            $puntos = $userpoints[0] + $points;
-	    mysql_query("UPDATE `usertbl` SET `points`= $puntos WHERE `moodle_id`= $userid");
+        if ($userpoints!= null) {
+            
+            $experiencia = $exp + $points;
+            $nivel = self::obtener_nivel($experiencia);
+            $nextlvl = self::obtener_nextlvl($nivel);
+            $monedas = self::obtener_monedas($nivel, $money, $points);
+            $puntos = self::obtener_puntos($nivel, $userpoints, $points);
+            
+            mysql_query("UPDATE `usertbl` SET `points`= $puntos, `monedas`= $monedas, `experiencia`= $experiencia, `nivel`= '$nivel', `next_lvl`=$nextlvl WHERE `moodle_id`= $userid"); 
+            
         } 
         return $campusclashid;
+    }
+
+    protected static function obtener_nivel($experiencia) {
+        $nivel = 1;
+        if($experiencia>20){
+            $nivel = 2;
+            if($experiencia>100){
+                $nivel = 3;
+                if($experiencia>250){
+                    $nivel = 4;
+                    if($experiencia>500){
+                        $nivel = 5;
+                    }
+                }
+            }
+        }
+        return $nivel; 
+    }
+
+     protected static function obtener_nextlvl($nivel){
+        switch ($nivel) {
+            case 1:
+                $nextlvl= 20;
+                break;
+            case 2:
+                $nextlvl= 100;
+                break;
+            case 3:
+                $nextlvl= 250;
+                break;
+            case 4:
+                $nextlvl= 500;
+                break;
+            default:
+                $nextlvl= null;
+        } 
+        return $nextlvl;
+    }
+
+    protected static function obtener_monedas($nivel, $money, $points){
+        switch ($nivel) {
+            case 1:
+                $monedas= $money + $points/2;
+                break;
+            case 2:
+                $monedas= $money + $points;
+                break;
+            case 3:
+                $monedas= $money + 2*$points;
+                break;
+            case 4:
+                $monedas= $money + 4*$points;
+                break;
+            case 5:
+                $monedas= $money + 8*$points;
+                break;
+            default:
+                $monedas= $money + $points/2;
+        } 
+        return $monedas;
+    }
+
+    protected static function obtener_puntos($nivel, $userpoints, $points){
+        switch ($nivel) {
+            case 1:
+                $puntos= $userpoints + $points;
+                break;
+            case 2:
+                $puntos= $userpoints + 2*$points;
+                break;
+            case 3:
+                $puntos= $userpoints + 9*$points;
+                break;
+            case 4:
+                $puntos= $userpoints + 12*$points;
+                break;
+            case 5:
+                $puntos= $userpoints + 16*$points;
+                break;
+            default:
+                $puntos= $userpoints + $points;
+        } 
+        return $puntos;
     }
 
     /**
@@ -286,7 +379,7 @@ class block_campusclash_manager {
 
         return $logid;
     }
-
+    
     /**
      * Get the configuration.
      *

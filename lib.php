@@ -46,19 +46,27 @@ function block_campusclash_print_page($campusclash, $return = false) {
     }
 }
 
-function block_campusclash_print_student_points($studentpoints) {
+function block_campusclash_print_student_points($studentpoints,$studentcoins,$studentexp,$username,$nivel) {
     global $USER, $COURSE;
+    $gray = "color:#CCCCCC; padding: 0px 10px 0px 10px;";
+    $style = "color:#FF4545; text-align:right; font-size: 20px; margin: 0px 20px 0px 0px; padding:0px 7px 10px 7px;";
+    $background = "background-color:black; border: 2px double #EBADC1;";
+    $border = "border:2px groove yellow; height:80px;";
 
     $table = new html_table();
     $table->attributes = array("class" => "rankingTable table table-striped generaltable");
     
-    $row = new html_table_row();
-    $row->cells = array($studentpoints);
-    $table->data[] = $row;
+    $row1 = new html_table_row();
+    $row1->cells = array("<b>Puntos</b>", "<b>Monedas</b>", "<b>Exp</b>");
+    $table->data[] = $row1;
+
+    $row2 = new html_table_row();
+    $row2->cells = array($studentpoints,$studentcoins,$studentexp);
+    $table->data[] = $row2;
 
     $individualpoints = html_writer::table($table);
 
-    return "<h4>".get_string('your_score', 'block_campusclash').":</h4>". $individualpoints;
+    return "<br><div style='$background'><h5 style='$gray'>Nick: ".$username."</h5><h5 style='$style'><i>Nivel ".$nivel."</i></h5></div><br><div style='$border'>".$individualpoints."</div><br>";
 }
 
 function block_campusclash_get_student_points($userid) {
@@ -72,6 +80,66 @@ function block_campusclash_get_student_points($userid) {
 
     mysql_select_db($database) or die ("error2".mysql_error());
     $result = mysql_query("SELECT `points` FROM `usertbl` WHERE `moodle_id` = $userid"); 
+    $row = mysql_fetch_row($result);
+    return "$row[0]"; 
+}
+
+function block_campusclash_get_student_coins($userid) {
+    global $COURSE, $DB;
+    $server="localhost";
+    $database = "campusclash";
+    $db_pass = 'T7tmn892AB3';
+    $db_user = 'root';
+    
+    mysql_connect($server, $db_user, $db_pass) or die ("error1".mysql_error());
+
+    mysql_select_db($database) or die ("error2".mysql_error());
+    $result = mysql_query("SELECT `monedas` FROM `usertbl` WHERE `moodle_id` = $userid"); 
+    $row = mysql_fetch_row($result);
+    return "$row[0]"; 
+}
+
+function block_campusclash_get_student_experience($userid) {
+    global $COURSE, $DB;
+    $server="localhost";
+    $database = "campusclash";
+    $db_pass = 'T7tmn892AB3';
+    $db_user = 'root';
+    
+    mysql_connect($server, $db_user, $db_pass) or die ("error1".mysql_error());
+
+    mysql_select_db($database) or die ("error2".mysql_error());
+    $result = mysql_query("SELECT `experiencia` FROM `usertbl` WHERE `moodle_id` = $userid"); 
+    $row = mysql_fetch_row($result);
+    return "$row[0]"; 
+}
+
+function block_campusclash_get_student_lvl($userid) {
+    global $COURSE, $DB;
+    $server="localhost";
+    $database = "campusclash";
+    $db_pass = 'T7tmn892AB3';
+    $db_user = 'root';
+    
+    mysql_connect($server, $db_user, $db_pass) or die ("error1".mysql_error());
+
+    mysql_select_db($database) or die ("error2".mysql_error());
+    $result = mysql_query("SELECT `nivel` FROM `usertbl` WHERE `moodle_id` = $userid"); 
+    $row = mysql_fetch_row($result);
+    return "$row[0]"; 
+}
+
+function block_campusclash_get_student_username($userid) {
+    global $COURSE, $DB;
+    $server="localhost";
+    $database = "campusclash";
+    $db_pass = 'T7tmn892AB3';
+    $db_user = 'root';
+    
+    mysql_connect($server, $db_user, $db_pass) or die ("error1".mysql_error());
+
+    mysql_select_db($database) or die ("error2".mysql_error());
+    $result = mysql_query("SELECT `username` FROM `usertbl` WHERE `moodle_id` = $userid"); 
     $row = mysql_fetch_row($result);
     return "$row[0]"; 
 }

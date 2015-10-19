@@ -57,11 +57,16 @@ class block_campusclash extends block_base {
 	$canview = has_capability('block/campusclash:viewpages', $context);
 
 	$studentpoints = block_campusclash_get_student_points($USER->id);
+    $studentcoins = block_campusclash_get_student_coins($USER->id); 
+    $studentexp = block_campusclash_get_student_experience($USER->id); 
+    $studentlvl = block_campusclash_get_student_lvl($USER->id);
+    $studentname = block_campusclash_get_student_username($USER->id);
+
 
 	if ($studentpoints!= null) {
         $ccweb = "http://localhost/campusclashapp/public/index.php";
-        $this->content->text .= block_campusclash_print_student_points($studentpoints);
-	    $this->content->text .= '<a href='.$ccweb.' style="margin: 0px 35px;"><button>Canjea tus puntos aquí!</button></a>';
+        $this->content->text .= block_campusclash_print_student_points($studentpoints, $studentcoins, $studentexp, $studentname, $studentlvl);
+	    $this->content->text .= '<a href='.$ccweb.' style="margin: 0px 35px;"><button>Canjea tus monedas aquí!</button></a>';
 	} else {
 	    if ($canmanage) {
 		    $accepted = '';
