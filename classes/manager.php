@@ -256,20 +256,31 @@ class block_campusclash_manager {
     	$row = mysql_fetch_assoc($result);
         $userpoints = $row['points'];
         $money = $row['monedas'];
-        $exp = $row['experiencia'];
+        $exp = $row['experiencia']; 
+        $username = $row['username'];  
+        $email = $row['email'];   
+            
+        $experiencia = $exp + $points;
+        $nivel = self::obtener_nivel($experiencia);
+        $nextlvl = self::obtener_nextlvl($nivel);
+        $monedas = self::obtener_monedas($nivel, $money, $points);
+        $puntos = self::obtener_puntos($nivel, $userpoints, $points);
+            
+        mysql_query("UPDATE `usertbl` SET `points`= $puntos, `monedas`= $monedas, `experiencia`= $experiencia, `nivel`= '$nivel', `next_lvl`=$nextlvl WHERE `moodle_id`= $userid"); 
+        
+        $consulta = mysql_query("SELECT * FROM `puntos_curso` WHERE `course_id` = $courseid AND `moodle_id` = $userid");
 
-        // User dont have points yet.
-        if ($userpoints!= null) {
-            
-            $experiencia = $exp + $points;
-            $nivel = self::obtener_nivel($experiencia);
-            $nextlvl = self::obtener_nextlvl($nivel);
-            $monedas = self::obtener_monedas($nivel, $money, $points);
-            $puntos = self::obtener_puntos($nivel, $userpoints, $points);
-            
-            mysql_query("UPDATE `usertbl` SET `points`= $puntos, `monedas`= $monedas, `experiencia`= $experiencia, `nivel`= '$nivel', `next_lvl`=$nextlvl WHERE `moodle_id`= $userid"); 
-            
-        } 
+        if (mysql_num_rows($consulta)>0) {
+            $row2 = mysql_fetch_assoc($consulta);
+            $money2 = $row['monedas'];
+            $monedas2 = self::obtener_monedas($nivel, $money2, $points);
+            mysql_query("UPDATE `puntos_curso` SET `monedas`= $monedas2 WHERE `course_id` = $courseid AND `moodle_id` = $userid"); 
+        } else {
+            $timecreated = time();
+            $monedas2 = 5 + $points/2;
+            mysql_query ("INSERT INTO `puntos_curso`(`moodle_id`, `course_id`, `email`, `username`, `monedas`, `timecreated`) 
+                            VALUES ('".$userid."', '".$courseid."', '".$email."', '".$username."', '".$monedas2."', '".$timecreated."')");
+        }
         return $campusclashid;
     }
 
@@ -336,10 +347,10 @@ class block_campusclash_manager {
     protected static function obtener_puntos($nivel, $userpoints, $points){
         switch ($nivel) {
             case 1:
-                $puntos= $userpoints + $points;
+                $puntos= $userpoints + 2*$points;
                 break;
             case 2:
-                $puntos= $userpoints + 2*$points;
+                $puntos= $userpoints + 4*$points;
                 break;
             case 3:
                 $puntos= $userpoints + 9*$points;

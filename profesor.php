@@ -1,7 +1,7 @@
 <?php
  
 require_once('../../config.php');
-require_once('campusclash_formulario.php');
+require_once('campusclash_profesor_form.php');
  
 global $DB, $OUTPUT, $PAGE, $USER;
 
@@ -22,17 +22,17 @@ if (!$course = $DB->get_record('course', array('id' => $courseid))) {
 require_login($course);
 //ensure that users have access to only those portions of the application that they should
 require_capability('block/campusclash:viewpages', context_course::instance($courseid));
-$PAGE->set_url('/blocks/campusclash/accepted.php', array('id' => $courseid));
+$PAGE->set_url('/blocks/campusclash/profesor.php', array('id' => $courseid));
 $PAGE->set_pagelayout('standard');
 $PAGE->set_heading(get_string('edithtml', 'block_campusclash'));
 
 //Esto aparecerá dentro del bloque de administración
 $settingsnode = $PAGE->settingsnav->add(get_string('campusclashsettings', 'block_campusclash'));
-$editurl = new moodle_url('/blocks/campusclash/accepted.php', array('id' => $id, 'courseid' => $courseid, 'blockid' => $blockid));
+$editurl = new moodle_url('/blocks/campusclash/profesor.php', array('id' => $id, 'courseid' => $courseid, 'blockid' => $blockid));
 $editnode = $settingsnode->add(get_string('editpage', 'block_campusclash'), $editurl);
 $editnode->make_active();
  
-$campusclash = new campusclash_formulario();
+$campusclash = new campusclash_profesor_form();
 
 $toform['blockid'] = $blockid;
 $toform['courseid'] = $courseid;
@@ -62,8 +62,6 @@ if($campusclash->is_cancelled()) {
     mysql_select_db($database) or die ("error2".mysql_error());
     $userid = $USER->id;
     $points = 0;
-    $experiencia = 0;
-    $monedas = 5;
     $timecreated = time();
     $fullname = $fromform->FULLNAME;
     $username = $fromform->USERNAME;
@@ -72,8 +70,12 @@ if($campusclash->is_cancelled()) {
     $isstudent = true;
     $style="color:red;";
 
-    $nuevo_usuario=mysql_query("SELECT `username` FROM `usertbl` WHERE `username`='$username'");
-    if(mysql_num_rows($nuevo_usuario)>0)
+    $nuevo_usuario = mysql_query("SELECT `username` FROM `usertbl` WHERE `username`='$username'");
+    $nuevo_profesor = mysql_query("SELECT `username` FROM `profesores` WHERE `username`='$username'");
+    $nuevo_vendedor = mysql_query("SELECT `username` FROM `vendedores` WHERE `username`='$username'");
+
+
+    if(mysql_num_rows($nuevo_usuario)>0 && mysql_num_rows($nuevo_profesor)>0 && mysql_num_rows($nuevo_vendedor)>0)
     {
         $site = get_site();
         echo $OUTPUT->header();
@@ -99,7 +101,10 @@ if($campusclash->is_cancelled()) {
         if(filter_var($email, FILTER_VALIDATE_EMAIL)){
 
             $nuevo_email=mysql_query("SELECT `email` FROM `usertbl` WHERE `email`='$email'");
-            if(mysql_num_rows($nuevo_email)>0) {
+            $nuevo_email2=mysql_query("SELECT `email` FROM `profesores` WHERE `email`='$email'");
+            $nuevo_email3=mysql_query("SELECT `email` FROM `vendedores` WHERE `email`='$email'");
+
+            if(mysql_num_rows($nuevo_email)>0 && mysql_num_rows($nuevo_email2)>0 && mysql_num_rows($nuevo_email3)>0) {
                 $site = get_site();
                 echo $OUTPUT->header();
                 echo "<p class='avisos' style=$style>El email ya existe, prueba con otro.</p>";
@@ -117,8 +122,8 @@ if($campusclash->is_cancelled()) {
                 echo $OUTPUT->footer();
             } else { // ------------ Si no esta registrado el e-mail continua el script
 
-                mysql_query ("INSERT INTO `usertbl`(`moodle_id`, `full_name`, `email`, `username`, `password`,`points`,`monedas`,`experiencia`, `timecreated`) 
-                            VALUES ('".$userid."', '".$fullname."', '".$email."', '".$username."', '".$password."', '".$points."', '".$monedas."', '".$experiencia."', '".$timecreated."')");
+                mysql_query ("INSERT INTO `profesores`(`moodle_id`, `full_name`, `email`, `username`, `password`, `timecreated`) 
+                            VALUES ('".$userid."', '".$fullname."', '".$email."', '".$username."', '".$password."', '".$timecreated."')");
                             redirect($courseurl);
             }
         } else {

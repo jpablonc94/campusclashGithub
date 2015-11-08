@@ -69,7 +69,21 @@ class block_campusclash extends block_base {
 	    $this->content->text .= '<a href='.$ccweb.' style="margin: 0px 35px;"><button>Canjea tus monedas aquí!</button></a>';
 	} else {
 	    if ($canmanage) {
-		    $accepted = '';
+		    $accepted = "";
+            if(block_campusclash_profesor_registrado($USER->id)){
+                if(!block_campusclash_asignatura_registrada($COURSE->id)){
+                    $pageparam = array('blockid' => $this->instance->id, 'courseid' => $COURSE->id, 'id' => $campusclashpage->id);                
+                    $asignaturaurl = new moodle_url('/blocks/campusclash/asignatura.php', $pageparam);
+                    $asignatura = '<div style="margin:30px 80px 15px 80px">'.html_writer::tag('p', html_writer::link($asignaturaurl, "Regístra esta asignatura", array('class' => 'btn btn-default'))).'</div>';
+                    $this->content->text .= $asignatura;
+                }
+            } else {
+                $pageparam = array('blockid' => $this->instance->id, 'courseid' => $COURSE->id, 'id' => $campusclashpage->id);
+                $profesorurl = new moodle_url('/blocks/campusclash/profesor.php', $pageparam);
+                $profesor = '<div style="margin:30px 80px 15px 80px">'.html_writer::tag('p', html_writer::link($profesorurl, "Regístrate como profesor", array('class' => 'btn btn-default'))).'</div>';
+                $this->content->text .= $profesor;
+            }
+            
 	    } else {
             $pageparam = array('blockid' => $this->instance->id, 'courseid' => $COURSE->id, 'id' => $campusclashpage->id);
             $acceptedurl = new moodle_url('/blocks/campusclash/accepted.php', $pageparam);

@@ -69,6 +69,42 @@ function block_campusclash_print_student_points($studentpoints,$studentcoins,$st
     return "<br><div style='$background'><h5 style='$gray'>Nick: ".$username."</h5><h5 style='$style'><i>Nivel ".$nivel."</i></h5></div><br><div style='$border'>".$individualpoints."</div><br>";
 }
 
+function block_campusclash_profesor_registrado($userid) {
+    global $COURSE, $DB;
+    $server="localhost";
+    $database = "campusclash";
+    $db_pass = 'T7tmn892AB3';
+    $db_user = 'root';
+    
+    mysql_connect($server, $db_user, $db_pass) or die ("error1".mysql_error());
+
+    mysql_select_db($database) or die ("error2".mysql_error());
+    $consulta = mysql_query("SELECT * FROM `profesores` WHERE `moodle_id` = $userid"); 
+    if(mysql_num_rows($consulta)>0){
+        return true;
+    } else {
+        return false; 
+    }
+}
+
+function block_campusclash_asignatura_registrada($courseid){
+    global $COURSE, $DB;
+    $server="localhost";
+    $database = "campusclash";
+    $db_pass = 'T7tmn892AB3';
+    $db_user = 'root';
+    
+    mysql_connect($server, $db_user, $db_pass) or die ("error1".mysql_error());
+
+    mysql_select_db($database) or die ("error2".mysql_error());
+    $consulta = mysql_query("SELECT * FROM `asignaturas` WHERE `course_id` = $courseid"); 
+    if(mysql_num_rows($consulta)>0){
+        return true;
+    } else {
+        return false; 
+    }
+}
+
 function block_campusclash_get_student_points($userid) {
     global $COURSE, $DB;
     $server="localhost";
@@ -226,11 +262,11 @@ function block_ranking_print_intro() {
                     <li><a href="#puntos" onclick="fondo2()">'.get_string('points', 'block_campusclash').'</a></li>
                     <li><a href="#contacto" onclick="fondo3()">'.get_string('contact', 'block_campusclash').'</a></li>
                 </ul>
-                <div id="fondo" style="width: 238px;height: 220px;border: 3px double gray; background: url('.$bg1.');">
+                <div id="fondo" style="border: 3px double gray; background: url('.$bg1.');">
                     <div id="quees">
                         <h5 style="color:white">¿Qué es CampusClash?</h5>
                         <h6 id="quees-texto" style="color:white;text-align:justify;font-size:13px">Antes de nada, darte la bienvenida y animarte a leer estas líneas, merecerá la pena.<br>El objetivo final de <a href='.$ccweb.' style='.$azulclaro.'>CampusClash</a> es hacer tu paso por el aula virtual, más entretenido. ¿Quieres saber más?</h6>                        
-                        <div style="color:white;margin:10px 0px 20px 45px">
+                        <div style="color:white;position:relative; left: 20%; right: 20%;">
                             <button onclick="previousA()">Volver</button>
                             <button onclick="nextA()">Seguir</button>                            
                         </div>
@@ -238,7 +274,7 @@ function block_ranking_print_intro() {
                     <div id="puntos">
                         <h5 style="color:white">Acerca de los puntos</h5>
                         <h6 id="puntos-texto" style="color:white;text-align:justify;font-size:13px">¿Quieres saber cómo conseguir más puntos?<br>La respuesta es simple: Participando en el aula mediante la entrega de tareas, la realización de test o la interacción en foros.</h6>
-                        <div style="color:white;margin:10px 0px 20px 45px">
+                        <div style="color:white;position:relative; left: 20%; right: 20%;">
                             <button onclick="previousB()">Volver</button>
                             <button onclick="nextB()">Seguir</button>
                         </div>
