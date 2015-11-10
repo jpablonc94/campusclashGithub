@@ -72,8 +72,11 @@ if($campusclash->is_cancelled()) {
     $isstudent = true;
     $style="color:red;";
 
-    $nuevo_usuario=mysql_query("SELECT `username` FROM `usertbl` WHERE `username`='$username'");
-    if(mysql_num_rows($nuevo_usuario)>0)
+    $nuevo_usuario = mysql_query("SELECT `username` FROM `usertbl` WHERE `username`='$username'");
+    $nuevo_profesor = mysql_query("SELECT `username` FROM `profesores` WHERE `username`='$username'");
+    $nuevo_vendedor = mysql_query("SELECT `username` FROM `vendedores` WHERE `username`='$username'");
+    
+    if(mysql_num_rows($nuevo_usuario)>0 || mysql_num_rows($nuevo_profesor)>0 || mysql_num_rows($nuevo_vendedor)>0)
     {
         $site = get_site();
         echo $OUTPUT->header();
@@ -99,7 +102,10 @@ if($campusclash->is_cancelled()) {
         if(filter_var($email, FILTER_VALIDATE_EMAIL)){
 
             $nuevo_email=mysql_query("SELECT `email` FROM `usertbl` WHERE `email`='$email'");
-            if(mysql_num_rows($nuevo_email)>0) {
+            $nuevo_email2=mysql_query("SELECT `email` FROM `profesores` WHERE `email`='$email'");
+            $nuevo_email3=mysql_query("SELECT `email` FROM `vendedores` WHERE `email`='$email'");
+
+            if(mysql_num_rows($nuevo_email)>0 || mysql_num_rows($nuevo_email2)>0 || mysql_num_rows($nuevo_email3)>0) {
                 $site = get_site();
                 echo $OUTPUT->header();
                 echo "<p class='avisos' style=$style>El email ya existe, prueba con otro.</p>";
