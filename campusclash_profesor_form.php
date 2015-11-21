@@ -16,14 +16,19 @@ class campusclash_profesor_form extends moodleform {
 	// add username element.
 	$mform->addElement('text', 'USERNAME', get_string('nombredeusuraio', 'block_campusclash'));
 	$mform->addRule('USERNAME', null, 'required', null, 'client');
+
+	// add a email
+	$mform->addElement('text', 'EMAIL', get_string('emaildeusuraio', 'block_campusclash'));
+	$mform->addRule('EMAIL', null, 'required', null, 'client');
 	
  	// add a password
 	$mform->addElement('password', 'PASSWORD', get_string('passdeusuraio', 'block_campusclash'));
 	$mform->addRule('PASSWORD', null, 'required', null, 'client');
 
-	// add a email
-	$mform->addElement('text', 'EMAIL', get_string('emaildeusuraio', 'block_campusclash'));
-	$mform->addRule('EMAIL', null, 'required', null, 'client');
+	// add a password
+	$mform->addElement('password', 'PASSWORD2', get_string('repite_passdeusuraio', 'block_campusclash'));
+	$mform->addRule('PASSWORD', null, 'required', null, 'client');
+
  
 	// add Form Buttons
 	$this->add_action_buttons();

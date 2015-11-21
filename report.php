@@ -57,7 +57,7 @@ $sql = "SELECT $userfields, r.points $from $where $order";
 
 $students = array_values($DB->get_records_sql($sql, $params));
 
-$strcoursereport = get_string('nostudents', 'block_campusclash');;
+$strcoursereport = get_string('nostudents', 'block_campusclash');
 if (count($students)) {
     $strcoursereport = get_string('report_head', 'block_campusclash', count($students));
 }

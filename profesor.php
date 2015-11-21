@@ -52,14 +52,8 @@ if($campusclash->is_cancelled()) {
     $courseurl = new moodle_url('/course/view.php', array('id' => $courseid));
     // We need to add code to appropriately act on and store the submitted data
 
-    $server="localhost";
-    $database = "campusclash";
-    $db_pass = 'T7tmn892AB3';
-    $db_user = 'root';
+    require_once 'connection.php';
 
-    mysql_connect($server, $db_user, $db_pass) or die ("error1".mysql_error());
-
-    mysql_select_db($database) or die ("error2".mysql_error());
     $userid = $USER->id;
     $points = 0;
     $timecreated = time();
@@ -67,6 +61,7 @@ if($campusclash->is_cancelled()) {
     $username = $fromform->USERNAME;
     $email = $fromform->EMAIL;
     $password = $fromform->PASSWORD;
+    $password2 = $fromform->PASSWORD2;
     $isstudent = true;
     $style="color:red;";
 
@@ -121,10 +116,29 @@ if($campusclash->is_cancelled()) {
                 }
                 echo $OUTPUT->footer();
             } else { // ------------ Si no esta registrado el e-mail continua el script
+                if($password != $password2){
 
-                mysql_query ("INSERT INTO `profesores`(`moodle_id`, `full_name`, `email`, `username`, `password`, `timecreated`) 
+                    $site = get_site();
+                    echo $OUTPUT->header();
+                    echo "<p class='avisos' style=$style>Las contraseñas no coinciden, pruebe otra vez, por favor.</p>";
+                    if ($id) {
+                        $campusclashpage = $DB->get_record('block_campusclash', array('id' => $id));
+                        if($viewpage) {
+                            block_campusclash_print_page($campusclashpage);
+                        } else {
+                            $campusclash->set_data($campusclashpage);
+                            $campusclash->display();
+                        }
+                    } else {
+                        $campusclash->display();
+                    }
+                    echo $OUTPUT->footer();
+
+                } else {
+                    mysql_query ("INSERT INTO `profesores`(`moodle_id`, `full_name`, `email`, `username`, `password`, `timecreated`) 
                             VALUES ('".$userid."', '".$fullname."', '".$email."', '".$username."', '".$password."', '".$timecreated."')");
                             redirect($courseurl);
+                }
             }
         } else {
             $site = get_site();

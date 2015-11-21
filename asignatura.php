@@ -3,7 +3,7 @@
 require_once('../../config.php');
 require_once('campusclash_asignatura_form.php');
  
-global $DB, $OUTPUT, $PAGE, $USER;
+global $DB, $OUTPUT, $PAGE, $USER, $COURSE;
 
 // Check for all required variables.
 $courseid = required_param('courseid', PARAM_INT); 
@@ -52,22 +52,25 @@ if($campusclash->is_cancelled()) {
     $courseurl = new moodle_url('/course/view.php', array('id' => $courseid));
     // We need to add code to appropriately act on and store the submitted data
 
-    $server="localhost";
-    $database = "campusclash";
-    $db_pass = 'T7tmn892AB3';
-    $db_user = 'root';
+    require_once 'connection.php';
 
-    mysql_connect($server, $db_user, $db_pass) or die ("error1".mysql_error());
-
-    mysql_select_db($database) or die ("error2".mysql_error());
     $profesorid = $USER->id;
     $timecreated = time();
     $universidad = $fromform->universidades;
     $grado = $fromform->grados;
-    $nombre = $fromform->nombreasignatura;
+    $nombre = $COURSE->fullname;
     $style="color:red;";
 
-    mysql_query ("INSERT INTO `asignaturas`(`profesor_id`, `course_id`, `universidad`, `grado`, `nombre_asignatura`, `timecreated`) VALUES ('".$profesorid."', '".$courseid."', '".$universidad."', '".$grado."', '".$nombre."', '".$timecreated."')");
+    $query =mysql_query("SELECT `username` FROM `profesores` WHERE `moodle_id`='".$profesorid."'");
+ 
+    $numrows=mysql_num_rows($query);
+
+    if($numrows!=0){
+        $row=mysql_fetch_assoc($query);
+        $username = $row['username'];
+        mysql_query ("INSERT INTO `asignaturas`(`profesor_id`, `username`, `course_id`, `universidad`, `grado`, `nombre_asignatura`, `timecreated`) VALUES ('".$profesorid."', '".$username."', '".$courseid."', '".$universidad."', '".$grado."', '".$nombre."', '".$timecreated."')");
+    }
+
     redirect($courseurl);            
         
 } else {

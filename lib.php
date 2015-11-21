@@ -71,14 +71,9 @@ function block_campusclash_print_student_points($studentpoints,$studentcoins,$st
 
 function block_campusclash_profesor_registrado($userid) {
     global $COURSE, $DB;
-    $server="localhost";
-    $database = "campusclash";
-    $db_pass = 'T7tmn892AB3';
-    $db_user = 'root';
-    
-    mysql_connect($server, $db_user, $db_pass) or die ("error1".mysql_error());
 
-    mysql_select_db($database) or die ("error2".mysql_error());
+    require_once 'connection.php';
+
     $consulta = mysql_query("SELECT * FROM `profesores` WHERE `moodle_id` = $userid"); 
     if(mysql_num_rows($consulta)>0){
         return true;
@@ -89,14 +84,9 @@ function block_campusclash_profesor_registrado($userid) {
 
 function block_campusclash_asignatura_registrada($courseid){
     global $COURSE, $DB;
-    $server="localhost";
-    $database = "campusclash";
-    $db_pass = 'T7tmn892AB3';
-    $db_user = 'root';
-    
-    mysql_connect($server, $db_user, $db_pass) or die ("error1".mysql_error());
 
-    mysql_select_db($database) or die ("error2".mysql_error());
+    require_once 'connection.php';
+
     $consulta = mysql_query("SELECT * FROM `asignaturas` WHERE `course_id` = $courseid"); 
     if(mysql_num_rows($consulta)>0){
         return true;
@@ -107,14 +97,9 @@ function block_campusclash_asignatura_registrada($courseid){
 
 function block_campusclash_get_student_points($userid) {
     global $COURSE, $DB;
-    $server="localhost";
-    $database = "campusclash";
-    $db_pass = 'T7tmn892AB3';
-    $db_user = 'root';
-	
-    mysql_connect($server, $db_user, $db_pass) or die ("error1".mysql_error());
 
-    mysql_select_db($database) or die ("error2".mysql_error());
+    require_once 'connection.php';
+
     $result = mysql_query("SELECT `points` FROM `usertbl` WHERE `moodle_id` = $userid"); 
     $row = mysql_fetch_row($result);
     return "$row[0]"; 
@@ -122,14 +107,9 @@ function block_campusclash_get_student_points($userid) {
 
 function block_campusclash_get_student_coins($userid) {
     global $COURSE, $DB;
-    $server="localhost";
-    $database = "campusclash";
-    $db_pass = 'T7tmn892AB3';
-    $db_user = 'root';
     
-    mysql_connect($server, $db_user, $db_pass) or die ("error1".mysql_error());
+    require_once 'connection.php';
 
-    mysql_select_db($database) or die ("error2".mysql_error());
     $result = mysql_query("SELECT `monedas` FROM `usertbl` WHERE `moodle_id` = $userid"); 
     $row = mysql_fetch_row($result);
     return "$row[0]"; 
@@ -137,14 +117,9 @@ function block_campusclash_get_student_coins($userid) {
 
 function block_campusclash_get_student_experience($userid) {
     global $COURSE, $DB;
-    $server="localhost";
-    $database = "campusclash";
-    $db_pass = 'T7tmn892AB3';
-    $db_user = 'root';
-    
-    mysql_connect($server, $db_user, $db_pass) or die ("error1".mysql_error());
 
-    mysql_select_db($database) or die ("error2".mysql_error());
+    require_once 'connection.php';
+
     $result = mysql_query("SELECT `experiencia` FROM `usertbl` WHERE `moodle_id` = $userid"); 
     $row = mysql_fetch_row($result);
     return "$row[0]"; 
@@ -152,14 +127,9 @@ function block_campusclash_get_student_experience($userid) {
 
 function block_campusclash_get_student_lvl($userid) {
     global $COURSE, $DB;
-    $server="localhost";
-    $database = "campusclash";
-    $db_pass = 'T7tmn892AB3';
-    $db_user = 'root';
-    
-    mysql_connect($server, $db_user, $db_pass) or die ("error1".mysql_error());
 
-    mysql_select_db($database) or die ("error2".mysql_error());
+    require_once 'connection.php';
+
     $result = mysql_query("SELECT `nivel` FROM `usertbl` WHERE `moodle_id` = $userid"); 
     $row = mysql_fetch_row($result);
     return "$row[0]"; 
@@ -167,14 +137,9 @@ function block_campusclash_get_student_lvl($userid) {
 
 function block_campusclash_get_student_username($userid) {
     global $COURSE, $DB;
-    $server="localhost";
-    $database = "campusclash";
-    $db_pass = 'T7tmn892AB3';
-    $db_user = 'root';
     
-    mysql_connect($server, $db_user, $db_pass) or die ("error1".mysql_error());
+    require_once 'connection.php';
 
-    mysql_select_db($database) or die ("error2".mysql_error());
     $result = mysql_query("SELECT `username` FROM `usertbl` WHERE `moodle_id` = $userid"); 
     $row = mysql_fetch_row($result);
     return "$row[0]"; 
@@ -226,7 +191,7 @@ function block_campusclash_get_students($limit = null) {
 function block_campusclash_print_students($rankinggeral) {
     global $PAGE;
 
-    $tablegeral = generate_table($rankinggeral);
+    $tablegeral = block_campusclash_generate_table($rankinggeral);
 
     $PAGE->requires->js_init_call('M.block_ranking.init_tabview');
 

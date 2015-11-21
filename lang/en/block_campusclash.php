@@ -84,22 +84,30 @@ $string['deletepage'] = 'Do you really want to delete \'$a\'';
 $string['edithtml'] = 'Edit HTML';
 $string['campusclashsettings'] = 'CampusClash Settings';
 $string['editpage'] = 'Edit Page';
-$string['nombrecompleto'] = 'Nombre y apellidos';
+$string['nombrecompleto'] = 'Nombre y Apellidos';
 $string['nombredeusuraio'] = 'Nombre de usuario';
 $string['passdeusuraio'] = 'Contraseña';
+$string['repite_passdeusuraio'] = 'Repite la contraseña';
 $string['usernameheader'] = 'Datos requeridos';
 $string['emaildeusuraio'] = 'Email';
 
 $string['general'] = 'General';
 $string['nostudents'] = 'No hay estudiantes';
+$string['nopremios'] = 'Nadie ha adquirido aún ninguno de tus premios';
 $string['table_position'] = 'Posición';
 $string['table_name'] = 'Nombre';
 $string['table_points'] = 'Puntos';
 $string['your_score'] = 'Tus puntos';
 $string['report_head'] = 'Ranking de tus estudiantes por puntos';
+$string['report_head2'] = 'Alumnos que han canjeado alguno de tus premios';
+$string['table_fecha'] = 'Fecha de compra';
+$string['table_precio'] = 'Precio del producto';
+$string['table_nombre_producto'] = 'Nombre del premio';
+$string['table_canjeado'] = 'Canjeado?';
 
 $string['Registrate'] = 'Regístrate';
 $string['Verlistadeusuarios'] = 'Ver lista de participantes';
+$string['Vercomprasdeusuarios'] = 'Ver compras de alumnos en esta asignatura';
 $string['campusclashsize_help'] = 'Size Help';
 $string['no'] = 'No';
 $string['enable_multiple_quizz_attempts'] = 'General';
@@ -112,6 +120,12 @@ $string['workshoppoints'] = 'Workshop Points';
 $string['defaultpoints'] = 'Default Points';
 $string['enable_multiple_quizz_attempts_help'] = 'Enable Multiple Quizz Attempts Help';
 $string['yes'] = 'Yes';
+
+$string['profesorheader'] = 'Registro como profesor';
+$string['asignaturaheader'] = 'Registro de asignatura';
+$string['universidades'] = 'Universidad';
+$string['grados'] = 'Grado';
+
 
 $string['definition'] = '¿Qué es?';
 $string['points'] = 'Puntos';

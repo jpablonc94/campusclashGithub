@@ -43,14 +43,8 @@ class block_campusclash extends block_base {
 
 
 	$context = context_course::instance($COURSE->id);
-	
-	if (has_capability('block/campusclash:managepages', $context)) {
-	    $footerurl = new moodle_url('/blocks/campusclash/report.php', array('courseid' => $this->page->course->id));
-        $this->content->footer .= '<div style="margin:20px 40px 0px 40px">'.html_writer::tag('p', html_writer::link($footerurl, get_string('Verlistadeusuarios', 'block_campusclash'), array('class' => 'btn btn-default'))).'</div>';
-
-	} else {
-            $this->content->footer = '';
-	}	
+		
+    $this->content->footer = '';
 
 	//Check to see if we are in editing mode and that we can manage pages.
 	$canmanage = has_capability('block/campusclash:managepages', $context);// && $PAGE->user_is_editing($this->instance->id);
@@ -71,12 +65,19 @@ class block_campusclash extends block_base {
 	    if ($canmanage) {
 		    $accepted = "";
             if(block_campusclash_profesor_registrado($USER->id)){
+                $footerurl = new moodle_url('/blocks/campusclash/report.php', array('courseid' => $this->page->course->id));
+                $this->content->footer .= '<div style="margin:20px 40px 0px 40px">'.html_writer::tag('p', html_writer::link($footerurl, get_string('Verlistadeusuarios', 'block_campusclash'), array('class' => 'btn btn-default'))).'</div>';   
+
                 if(!block_campusclash_asignatura_registrada($COURSE->id)){
                     $pageparam = array('blockid' => $this->instance->id, 'courseid' => $COURSE->id, 'id' => $campusclashpage->id);                
                     $asignaturaurl = new moodle_url('/blocks/campusclash/asignatura.php', $pageparam);
                     $asignatura = '<div style="margin:30px 80px 15px 80px">'.html_writer::tag('p', html_writer::link($asignaturaurl, "Regístra esta asignatura", array('class' => 'btn btn-default'))).'</div>';
                     $this->content->text .= $asignatura;
+                } else {
+                    $footerurl2 = new moodle_url('/blocks/campusclash/compras.php', array('courseid' => $this->page->course->id));
+                    $this->content->footer .= '<div style="margin:20px 20px 0px 20px">'.html_writer::tag('p', html_writer::link($footerurl2, get_string('Vercomprasdeusuarios', 'block_campusclash'), array('class' => 'btn btn-default'))).'</div>';
                 }
+                                   
             } else {
                 $pageparam = array('blockid' => $this->instance->id, 'courseid' => $COURSE->id, 'id' => $campusclashpage->id);
                 $profesorurl = new moodle_url('/blocks/campusclash/profesor.php', $pageparam);

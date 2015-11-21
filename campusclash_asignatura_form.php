@@ -14,7 +14,7 @@ class campusclash_asignatura_form extends moodleform {
     	'Universidad Politécnica de Cartagena' => 'Universidad Politécnica de Cartagena'
 	);
 
-	$mform->addElement('select', 'universidades', get_string('universidades'), $options);
+	$mform->addElement('select', 'universidades', get_string('universidades', 'block_campusclash'), $options);
 	$mform->addRule('universidades', null, 'required', null, 'client');
 
 
@@ -23,11 +23,8 @@ class campusclash_asignatura_form extends moodleform {
     	'Grado en Ingeniería Telemática' => 'Grado en Ingeniería Telemática'
 	);
 
-	$mform->addElement('select', 'grados', get_string('grados'), $options);
+	$mform->addElement('select', 'grados', get_string('grados', 'block_campusclash'), $options);
 	$mform->addRule('grados', null, 'required', null, 'client');
-
-	$mform->addElement('text', 'nombreasignatura', get_string('nombreasignatura', 'block_campusclash'));
-	$mform->addRule('nombreasignatura', null, 'required', null, 'client');
 
  
 	// add Form Buttons
